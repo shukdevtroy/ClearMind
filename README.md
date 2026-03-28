@@ -251,11 +251,11 @@ Find the `QUIZ_DATA` array and add:
 
 | Dark Mode | Light Mode |
 |---|---|
-| ![Dark](https://via.placeholder.com/420x260/090b0e/e84848?text=Dark+Mode) | ![Light](https://drive.google.com/file/d/1M9xQUWoce-s6jEnyIp0uTSv37PL1X0LY/view?usp=sharing) |
+| ![Dark](https://image2url.com/r2/default/images/1774681277673-f18a236d-1e58-463a-b7c0-9858ab91329a.png) | ![Light](https://image2url.com/r2/default/images/1774681198105-c466fab1-e371-4910-9fd2-0aef6ed0ed0f.png) |
 
 | Drug Profile Modal | Image Lightbox |
 |---|---|
-| ![Modal](https://via.placeholder.com/420x260/111620/e84848?text=Full+Profile+Modal) | ![Lightbox](https://via.placeholder.com/420x260/000000/ffffff?text=Image+Lightbox) |
+| ![Modal](https://image2url.com/r2/default/images/1774681407865-49681d84-83cb-4308-9e2b-a2d5b3774899.png) | ![Lightbox](https://image2url.com/r2/default/images/1774681375740-eb01e7a3-2bc8-4265-ae8b-42c7447ec53a.png) |
 
 > Replace these placeholders with real screenshots before publishing.
 
