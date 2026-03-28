@@ -1437,7 +1437,6 @@ function renderQuiz() {
       <div class="q-msg">${msg}</div>
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px">
         <button class="btn-p" onclick="restartQuiz()" style="display:inline-flex">↺ Retake Quiz</button>
-        <button class="btn-s" onclick="shareQuizResult(${pct})" style="display:inline-flex">🔗 Share Result</button>
       </div>
     </div>`;
     return;
@@ -1479,11 +1478,6 @@ function answerQuiz(i) {
 }
 function nextQ() { qIdx++; renderQuiz(); }
 function restartQuiz() { qIdx = 0; qScore = 0; renderQuiz(); }
-function shareQuizResult(pct) {
-  const text = `I scored ${pct}% on the ClearMind Drug Awareness Quiz. Test your knowledge: ${window.location.href}#quiz`;
-  if (navigator.share) navigator.share({title:'ClearMind Quiz',text,url:window.location.href});
-  else navigator.clipboard.writeText(text).then(() => showToast('🔗 Result link copied!'));
-}
 
 // ═══════════════════════════════════════
 //  TIMELINE
