@@ -47,9 +47,8 @@ Key statistics featured on the site:
 
 > Deploy to GitHub Pages in one click — see [Getting Started](#-getting-started).
 
-```
-https://shukdevtroy.github.io/ClearMind/
-```
+[Click to view Website](https://shukdevtroy.github.io/ClearMind/)
+
 
 ---
 
