@@ -22,8 +22,6 @@
 - [Customisation](#-customisation)
 - [Screenshots](#-screenshots)
 - [Contributing](#-contributing)
-- [Guidelines](#-guidelines)
-- [Disclaimer](#-disclaimer)
 - [License](#-license)
 
 ---
