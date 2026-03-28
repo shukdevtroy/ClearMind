@@ -49,7 +49,7 @@ Key statistics featured on the site:
 > Deploy to GitHub Pages in one click — see [Getting Started](#-getting-started).
 
 ```
-https://<your-username>.github.io/<repo-name>/
+https://shukdevtroy.github.io/ClearMind/
 ```
 
 ---
