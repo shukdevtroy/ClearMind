@@ -136,7 +136,7 @@ https://<your-username>.github.io/<repo-name>/
 
 ```bash
 # Clone the repo
-git clone https://github.com/<your-username>/clearmind.git
+git clone https://github.com/shukdevtroy/ClearMind.git
 
 # Open in your browser
 open index.html
@@ -321,8 +321,3 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 ```
 
 ---
-
-<p align="center">
-  Built with ❤️ for public health awareness &nbsp;·&nbsp;
-  <a href="#-clearmind--drug-awareness--prevention">Back to top ↑</a>
-</p>
