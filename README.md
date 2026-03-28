@@ -251,7 +251,7 @@ Find the `QUIZ_DATA` array and add:
 
 | Dark Mode | Light Mode |
 |---|---|
-| ![Dark](https://via.placeholder.com/420x260/090b0e/e84848?text=Dark+Mode) | ![Light](https://via.placeholder.com/420x260/f5f4f0/e84848?text=Light+Mode) |
+| ![Dark](https://via.placeholder.com/420x260/090b0e/e84848?text=Dark+Mode) | ![Light](https://drive.google.com/file/d/1M9xQUWoce-s6jEnyIp0uTSv37PL1X0LY/view?usp=sharing) |
 
 | Drug Profile Modal | Image Lightbox |
 |---|---|
