@@ -277,24 +277,6 @@ Contributions are welcome — especially corrections to drug information or addi
 
 ---
 
-## ⚠️ Disclaimer
-
-**ClearMind is for educational and public health awareness purposes only.**
-
-The information provided on this site is not medical advice. If you or someone you know is struggling with substance use or addiction, please contact a qualified healthcare professional or a local addiction support service.
-
-**Emergency helplines:**
-
-| Country | Number |
-|---|---|
-| 🇺🇸 USA | SAMHSA: 1-800-662-4357 |
-| 🇬🇧 UK | Frank: 0300 123 6600 |
-| 🇦🇺 Australia | DirectLine: 1800 888 236 |
-| 🇨🇦 Canada | Crisis Services: 1-833-456-4566 |
-| 🌍 International | findahelpline.com |
-
----
-
 ## 📄 License
 
 This project is licensed under the **MIT License** — you are free to use, modify, and distribute it for any purpose, including commercial use, as long as the original licence notice is retained.
