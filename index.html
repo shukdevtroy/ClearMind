@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClearMind — Drug Awareness & Prevention</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#090b0e;--bg2:#0f1318;--bg3:#151a21;--card:#111620;
+--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--border3:rgba(255,255,255,0.22);
+--red:#e84848;--red-dim:rgba(232,72,72,0.12);--red-glow:rgba(232,72,72,0.3);
+--amber:#f59e0b;--teal:#2dd4bf;--purple:#a78bfa;--green:#4ade80;
+--text:#eceae3;--muted:#8a8880;--muted2:#4e4c49;
+--serif:'DM Serif Display',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;
+--ease:cubic-bezier(.4,0,.2,1);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.65;overflow-x:hidden;transition:background .3s,color .3s}
+body.light{--bg:#f5f4f0;--bg2:#eeede8;--bg3:#e5e3dc;--card:#faf9f6;--border:rgba(0,0,0,0.09);--border2:rgba(0,0,0,0.14);--border3:rgba(0,0,0,0.22);--text:#1a1917;--muted:#6b6966;--muted2:#b8b5b0}
+
+/* PARTICLES */
+#particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.particle{position:absolute;border-radius:50%;background:rgba(232,72,72,0.1);animation:floatP linear infinite}
+@keyframes floatP{0%{transform:translateY(100vh) rotate(0deg);opacity:0}10%{opacity:1}90%{opacity:.25}100%{transform:translateY(-10vh) rotate(360deg);opacity:0}}
+
+/* CURSOR */
+.cursor{width:10px;height:10px;background:var(--red);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform .1s;mix-blend-mode:screen;top:0;left:0}
+.cursor-ring{width:32px;height:32px;border:1px solid rgba(232,72,72,0.5);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transition:transform .25s var(--ease),width .2s,height .2s,border-color .2s;top:0;left:0}
+
+/* PROGRESS */
+#progressBar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--red),var(--amber),var(--teal));z-index:300;width:0;transition:width .08s linear}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:62px;
+  background:rgba(9,11,14,0.85);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;padding:0 44px;
+  transition:background .3s,border-color .3s}
+body.light nav{background:rgba(245,244,240,0.9)}
+nav.scrolled{background:rgba(9,11,14,0.97);border-bottom-color:var(--border2)}
+body.light nav.scrolled{background:rgba(245,244,240,0.98)}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:21px;color:var(--text);text-decoration:none;cursor:pointer;flex-shrink:0}
+.logo-dot{width:8px;height:8px;border-radius:50%;background:var(--red);animation:pulseRed 2.5s ease-in-out infinite;flex-shrink:0}
+@keyframes pulseRed{0%,100%{box-shadow:0 0 0 0 var(--red-glow)}50%{box-shadow:0 0 0 6px transparent}}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-links a{color:var(--muted);font-size:12.5px;font-weight:500;text-decoration:none;
+  letter-spacing:.04em;text-transform:uppercase;padding:6px 12px;border-radius:6px;
+  transition:all .2s;border:1px solid transparent}
+.nav-links a:hover,.nav-links a.active{color:var(--text);background:rgba(255,255,255,0.05);border-color:var(--border2)}
+body.light .nav-links a:hover,body.light .nav-links a.active{background:rgba(0,0,0,0.05)}
+.nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.search-btn{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;
+  padding:7px 14px;color:var(--muted);font-size:12.5px;cursor:pointer;font-family:var(--sans);
+  display:flex;align-items:center;gap:8px;transition:all .2s;white-space:nowrap}
+.search-btn:hover{border-color:var(--border3);color:var(--text)}
+.search-btn kbd{background:var(--bg2);border:1px solid var(--border2);border-radius:3px;padding:1px 5px;font-size:10px}
+.nav-cta{background:var(--red);color:#fff;border:none;border-radius:7px;padding:8px 18px;
+  font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sans);
+  text-decoration:none;transition:all .2s;white-space:nowrap;display:inline-flex;align-items:center;gap:5px}
+.nav-cta:hover{background:#d43e3e;transform:translateY(-1px);box-shadow:0 4px 18px var(--red-glow)}
+.theme-btn{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;
+  width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;
+  font-size:15px;transition:all .2s;flex-shrink:0}
+.theme-btn:hover{border-color:var(--border3)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none}
+.hamburger span{width:20px;height:2px;background:var(--muted);border-radius:2px;transition:all .3s;display:block}
+.mobile-menu{display:none;position:fixed;top:62px;left:0;right:0;background:rgba(9,11,14,0.98);
+  backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:199;
+  padding:16px 24px 24px;flex-direction:column;gap:4px}
+.mobile-menu.open{display:flex}
+.mobile-menu a{color:var(--muted);font-size:15px;text-decoration:none;padding:11px 4px;
+  border-bottom:1px solid var(--border);transition:color .2s;cursor:pointer}
+.mobile-menu a:hover{color:var(--text)}
+
+/* SEARCH */
+.search-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:500;
+  backdrop-filter:blur(12px);display:flex;flex-direction:column;align-items:center;
+  padding-top:90px;opacity:0;pointer-events:none;transition:opacity .25s}
+.search-overlay.open{opacity:1;pointer-events:all}
+.search-box{width:100%;max-width:620px;padding:0 20px;position:relative}
+.search-input-wrap{position:relative;margin-bottom:14px}
+.si{position:absolute;left:16px;top:50%;transform:translateY(-50%);opacity:.4;pointer-events:none}
+#searchInput{width:100%;background:var(--card);border:1px solid var(--border2);border-radius:12px;
+  padding:15px 15px 15px 46px;font-size:17px;font-family:var(--sans);color:var(--text);outline:none;transition:border-color .2s}
+#searchInput:focus{border-color:rgba(232,72,72,0.5)}
+#searchInput::placeholder{color:var(--muted)}
+.search-hint{font-size:12px;color:var(--muted);text-align:center;margin-bottom:12px}
+.search-results{display:flex;flex-direction:column;gap:7px;max-height:420px;overflow-y:auto}
+.search-result-item{background:var(--card);border:1px solid var(--border);border-radius:10px;
+  padding:13px 16px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px}
+.search-result-item:hover{border-color:var(--border2);background:var(--bg3)}
+.sr-emoji{font-size:22px;flex-shrink:0}
+.sr-name{font-weight:600;font-size:14px;margin-bottom:2px}
+.sr-desc{font-size:12px;color:var(--muted);line-height:1.4}
+.s-close{position:absolute;top:-54px;right:0;background:var(--card);border:1px solid var(--border);
+  width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:16px;color:var(--muted);
+  display:flex;align-items:center;justify-content:center;transition:all .2s}
+.s-close:hover{background:var(--red-dim);color:var(--red)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;padding:130px 40px 80px;position:relative;z-index:1}
+.hero::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 80% 55% at 50% -5%,rgba(232,72,72,0.09) 0%,transparent 65%),
+             radial-gradient(ellipse 45% 35% at 85% 85%,rgba(45,212,191,0.04) 0%,transparent 55%)}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;
+  background:var(--red-dim);border:1px solid rgba(232,72,72,0.25);
+  border-radius:100px;padding:5px 16px;font-size:11px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;color:#f07070;margin-bottom:30px;
+  animation:fadeD .8s var(--ease) both}
+.blink{width:6px;height:6px;border-radius:50%;background:var(--red);animation:blinkA 1.4s infinite;flex-shrink:0}
+@keyframes blinkA{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes fadeD{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeU{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.hero h1{font-family:var(--serif);font-size:clamp(42px,7.5vw,90px);line-height:1.04;
+  letter-spacing:-1.5px;font-weight:400;max-width:920px;margin-bottom:22px;
+  animation:fadeU .9s .1s var(--ease) both}
+.hero h1 em{font-style:italic;color:var(--red)}
+.hero-sub{font-size:17px;color:var(--muted);max-width:550px;line-height:1.75;
+  margin-bottom:40px;font-weight:300;animation:fadeU .9s .2s var(--ease) both}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;animation:fadeU .9s .3s var(--ease) both}
+.btn-p{background:var(--red);color:#fff;border:none;border-radius:9px;padding:13px 30px;
+  font-size:15px;font-weight:600;cursor:pointer;font-family:var(--sans);text-decoration:none;
+  transition:all .25s;display:inline-flex;align-items:center;gap:8px}
+.btn-p:hover{background:#d43e3e;transform:translateY(-2px);box-shadow:0 8px 28px var(--red-glow)}
+.btn-s{background:transparent;color:var(--text);border:1px solid var(--border2);border-radius:9px;
+  padding:13px 30px;font-size:15px;font-weight:500;cursor:pointer;font-family:var(--sans);
+  text-decoration:none;transition:all .25s;display:inline-flex;align-items:center;gap:8px}
+.btn-s:hover{background:var(--bg3);border-color:var(--border3);transform:translateY(-2px)}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden;
+  margin-top:60px;width:100%;max-width:740px;animation:fadeU .9s .5s var(--ease) both}
+.stat-cell{background:var(--card);padding:20px 16px;text-align:center;transition:background .3s}
+.stat-num{font-family:var(--serif);font-size:32px;color:var(--text);line-height:1;margin-bottom:5px}
+.stat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;line-height:1.4}
+.scroll-hint{margin-top:36px;animation:bounce 2s ease-in-out infinite;color:var(--muted2);font-size:20px;cursor:pointer}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+
+/* TICKER */
+.ticker-wrap{background:var(--red);padding:9px 0;overflow:hidden;position:relative;z-index:2}
+.ticker-track{display:flex;white-space:nowrap;animation:tickerAnim 55s linear infinite}
+.ticker-track span{font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,0.9);padding:0 32px}
+.ticker-sep{color:rgba(255,255,255,0.35)}
+@keyframes tickerAnim{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SECTION */
+section{padding:88px 44px;position:relative;z-index:1}
+.sec-inner{max-width:1140px;margin:0 auto}
+.sec-tag{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:11px}
+.sec-title{font-family:var(--serif);font-size:clamp(28px,4vw,44px);line-height:1.1;letter-spacing:-.5px;margin-bottom:14px}
+.sec-sub{font-size:15px;color:var(--muted);max-width:520px;line-height:1.75}
+
+/* DRUGS */
+#drugs{background:var(--bg2)}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:30px 0 26px}
+.filter-bar{display:flex;gap:7px;flex-wrap:wrap}
+.fb{padding:7px 15px;border-radius:100px;border:1px solid var(--border2);background:transparent;
+  color:var(--muted);font-size:12.5px;font-family:var(--sans);cursor:pointer;transition:all .2s;font-weight:500}
+.fb.active,.fb:hover{background:var(--red-dim);border-color:rgba(232,72,72,0.4);color:#f08080}
+.view-toggle{display:flex;gap:3px;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:3px}
+.view-btn{background:none;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;color:var(--muted);font-size:13px;transition:all .2s}
+.view-btn.active{background:var(--card);color:var(--text)}
+.drugs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px}
+.drugs-grid.lv{grid-template-columns:1fr}
+.drug-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;
+  cursor:pointer;transition:border-color .3s,transform .3s,box-shadow .3s;display:flex;flex-direction:column}
+.drug-card:hover{border-color:var(--border3);transform:translateY(-4px);box-shadow:0 14px 44px rgba(0,0,0,0.35)}
+.drugs-grid.lv .drug-card{flex-direction:row}
+.card-visual{width:100%;height:160px;background:var(--bg3);display:flex;align-items:center;
+  justify-content:center;font-size:46px;position:relative;overflow:hidden;flex-shrink:0;transition:all .3s}
+.drugs-grid.lv .card-visual{width:110px;height:auto;min-height:120px;font-size:32px}
+.drug-card:hover .card-visual{background:rgba(232,72,72,0.06)}
+.card-visual::after{content:'';position:absolute;bottom:0;left:0;right:0;height:36px;background:linear-gradient(to top,var(--card),transparent)}
+.cat-badge{position:absolute;top:9px;left:9px;font-size:10px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;padding:3px 8px;border-radius:4px;background:rgba(0,0,0,0.65);
+  backdrop-filter:blur(4px);color:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.08)}
+.card-body{padding:16px 18px 18px;flex:1;display:flex;flex-direction:column}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:7px}
+.card-name{font-family:var(--serif);font-size:20px;line-height:1.2}
+.dbadge{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:4px;flex-shrink:0;margin-top:3px;white-space:nowrap}
+.dc{background:rgba(232,72,72,0.18);color:#f07070;border:1px solid rgba(232,72,72,0.28)}
+.dh{background:rgba(245,158,11,0.15);color:#fbbf24;border:1px solid rgba(245,158,11,0.28)}
+.dm{background:rgba(45,212,191,0.12);color:#5eead4;border:1px solid rgba(45,212,191,0.22)}
+.card-also{font-size:12px;color:var(--muted);margin-bottom:7px}
+.card-desc{font-size:13.5px;color:#b5b2ab;line-height:1.65;flex:1}
+body.light .card-desc{color:#5a5753}
+.card-footer{margin-top:13px;padding-top:13px;border-top:1px solid var(--border)}
+.card-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:11px}
+.ctag{font-size:11px;font-weight:500;padding:2px 7px;border-radius:4px;background:var(--bg3);border:1px solid var(--border);color:var(--muted)}
+.learn-btn{width:100%;padding:9px;background:transparent;border:1px solid var(--border2);
+  border-radius:8px;color:var(--text);font-size:13px;font-family:var(--sans);cursor:pointer;
+  transition:all .25s;font-weight:500}
+.learn-btn:hover{background:var(--red-dim);border-color:rgba(232,72,72,0.4);color:#f08080}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:400;
+  display:flex;align-items:center;justify-content:center;padding:16px;
+  opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(8px)}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--card);border:1px solid var(--border2);border-radius:18px;
+  max-width:740px;width:100%;max-height:92vh;overflow-y:auto;
+  transform:scale(.96) translateY(16px);transition:transform .3s var(--ease);scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
+.modal::-webkit-scrollbar{width:4px}
+.modal::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.modal-overlay.open .modal{transform:scale(1) translateY(0)}
+.modal-hero{height:210px;background:var(--bg3);border-radius:16px 16px 0 0;
+  display:flex;align-items:center;justify-content:center;font-size:68px;position:relative;overflow:hidden}
+.modal-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(232,72,72,0.07),transparent)}
+.modal-hero-bot{position:absolute;bottom:0;left:0;right:0;height:70px;background:linear-gradient(to top,var(--card),transparent)}
+.m-body{padding:28px 32px 36px}
+.m-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:5px}
+.m-title h2{font-family:var(--serif);font-size:32px;line-height:1.1;margin-bottom:3px}
+.m-title p{font-size:12.5px;color:var(--muted)}
+.m-close{width:36px;height:36px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);
+  cursor:pointer;font-size:16px;color:var(--muted);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.m-close:hover{background:var(--red-dim);color:var(--red)}
+.m-meta{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px}
+.m-tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:22px;overflow-x:auto}
+.m-tab{background:none;border:none;padding:9px 18px;color:var(--muted);font-size:13px;
+  font-family:var(--sans);cursor:pointer;font-weight:500;border-bottom:2px solid transparent;
+  transition:all .2s;white-space:nowrap;margin-bottom:-1px}
+.m-tab.active{color:var(--text);border-bottom-color:var(--red)}
+.m-tab:hover:not(.active){color:var(--text)}
+.tab-p{display:none}
+.tab-p.active{display:block;animation:fadeIn .2s var(--ease)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.m-sec{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--red);margin:18px 0 9px;display:flex;align-items:center;gap:8px}
+.m-sec:first-child{margin-top:0}
+.m-sec::after{content:'';flex:1;height:1px;background:var(--border)}
+.m-text{font-size:14px;color:#c5c2bb;line-height:1.75}
+body.light .m-text{color:#4a4845}
+.harm-list,.prev-list{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.harm-list li{font-size:13.5px;color:#c5c2bb;padding:8px 12px 8px 13px;background:rgba(232,72,72,0.05);
+  border-radius:7px;border-left:2px solid var(--red);line-height:1.55}
+.prev-list li{font-size:13.5px;color:#c5c2bb;padding:8px 12px 8px 13px;background:rgba(45,212,191,0.07);
+  border-radius:7px;border-left:2px solid var(--teal);line-height:1.55}
+body.light .harm-list li,body.light .prev-list li{color:#4a4845}
+.warn-box{background:rgba(232,72,72,0.07);border:1px solid rgba(232,72,72,0.2);
+  border-radius:9px;padding:12px 15px;margin-bottom:18px}
+.warn-box p{font-size:13px;color:#f08080;line-height:1.6}
+.fact-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:8px}
+.fact-item{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:11px 13px}
+.fact-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px}
+.fact-value{font-size:13.5px;color:var(--text);font-weight:500}
+.meter-wrap{margin-top:14px}
+.meter-hd{display:flex;justify-content:space-between;margin-bottom:5px}
+.meter-hd span{font-size:12px;color:var(--muted)}
+.meter-bg{height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.meter-fill{height:100%;border-radius:3px;transition:width 1.2s .3s var(--ease);width:0}
+.m-share-btn{margin-top:14px;width:100%;padding:10px;background:var(--bg3);border:1px solid var(--border2);
+  border-radius:8px;color:var(--muted);font-size:13px;font-family:var(--sans);cursor:pointer;
+  transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.m-share-btn:hover{border-color:var(--border3);color:var(--text)}
+
+/* SIGNS */
+#signs{background:var(--bg)}
+.signs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:13px;margin-top:34px}
+.sign-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:19px;transition:all .25s}
+.sign-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.sign-icon{font-size:22px;margin-bottom:10px;display:block}
+.sign-title{font-weight:600;font-size:14.5px;margin-bottom:5px}
+.sign-desc{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* MYTHS BUSTER */
+#myths{background:var(--bg2)}
+.myths-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px;margin-top:34px}
+.myth-card{border-radius:14px;padding:22px;border:1px solid;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.myth-card.myth-false{background:rgba(232,72,72,0.05);border-color:rgba(232,72,72,0.2)}
+.myth-card.myth-true{background:rgba(45,212,191,0.05);border-color:rgba(45,212,191,0.2)}
+.myth-card:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,0.2)}
+.myth-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:9px;display:flex;align-items:center;gap:6px}
+.myth-label.f{color:#f08080}
+.myth-label.t{color:#5eead4}
+.myth-q{font-weight:600;font-size:15px;margin-bottom:8px;line-height:1.4}
+.myth-a{font-size:13.5px;color:var(--muted);line-height:1.65}
+.myth-n{position:absolute;top:14px;right:18px;font-family:var(--serif);font-size:38px;opacity:.08}
+
+/* BODY MAP */
+#bodymap{background:var(--bg)}
+.bm-layout{display:grid;grid-template-columns:1fr 2fr;gap:40px;margin-top:36px;align-items:start}
+.bm-list{display:flex;flex-direction:column;gap:8px}
+.bm-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px 16px;
+  cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:11px}
+.bm-item:hover,.bm-item.active{border-color:var(--red);background:var(--red-dim)}
+.bm-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.bm-name{font-size:14px;font-weight:500}
+.bm-panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:26px;min-height:280px}
+.bm-panel-title{font-family:var(--serif);font-size:26px;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.bm-panel-desc{font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:16px}
+.bm-drugs{display:flex;gap:6px;flex-wrap:wrap}
+.bm-drug-tag{font-size:12px;padding:3px 9px;border-radius:5px;background:var(--red-dim);border:1px solid rgba(232,72,72,0.25);color:#f08080;cursor:pointer;transition:all .2s}
+.bm-drug-tag:hover{background:rgba(232,72,72,0.2)}
+
+/* OVERDOSE */
+#overdose{background:var(--bg2)}
+.od-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(265px,1fr));gap:16px;margin-top:34px}
+.od-card{border-radius:14px;padding:22px;border:1px solid;transition:all .25s}
+.od-card:hover{transform:translateY(-2px)}
+.od-r{background:rgba(232,72,72,0.07);border-color:rgba(232,72,72,0.2)}
+.od-a{background:rgba(245,158,11,0.07);border-color:rgba(245,158,11,0.2)}
+.od-t{background:rgba(45,212,191,0.07);border-color:rgba(45,212,191,0.2)}
+.od-p{background:rgba(167,139,250,0.07);border-color:rgba(167,139,250,0.2)}
+.od-title{font-weight:700;font-size:16px;margin-bottom:11px;display:flex;align-items:center;gap:7px}
+.od-steps{list-style:none;display:flex;flex-direction:column;gap:6px}
+.od-steps li{font-size:13.5px;color:#c5c2bb;padding:7px 10px;background:rgba(0,0,0,0.22);
+  border-radius:6px;display:flex;align-items:flex-start;gap:7px;line-height:1.5}
+body.light .od-steps li{color:#4a4845;background:rgba(0,0,0,0.06)}
+.od-n{background:rgba(255,255,255,0.07);border-radius:50%;width:19px;height:19px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:1px}
+.emergency-strip{background:linear-gradient(135deg,rgba(232,72,72,0.12),rgba(232,72,72,0.04));
+  border:1px solid rgba(232,72,72,0.25);border-radius:14px;padding:22px 26px;margin-top:32px;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.es-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:12px;grid-column:1/-1}
+.es-num{background:var(--card);border:1px solid var(--border2);border-radius:10px;padding:13px 16px;transition:all .2s}
+.es-num:hover{border-color:rgba(232,72,72,0.35);transform:translateY(-2px)}
+.es-flag{font-size:18px;margin-bottom:3px}
+.es-country{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.es-call{font-family:var(--serif);font-size:18px;color:var(--red);margin-top:3px}
+.es-link{display:block;font-size:11px;color:var(--muted);margin-top:3px;text-decoration:none;transition:color .2s}
+.es-link:hover{color:var(--red)}
+
+/* RISK CHART */
+#riskchart{background:var(--bg3)}
+.rc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:13px;margin-top:34px}
+.rc-row{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:16px 18px;transition:all .2s;cursor:pointer}
+.rc-row:hover{border-color:var(--border2);transform:translateY(-2px)}
+.rc-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.rc-name{font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px}
+.rc-score{font-family:var(--serif);font-size:18px;color:var(--red)}
+.rc-bars{display:flex;flex-direction:column;gap:6px}
+.rc-bar-row{display:flex;align-items:center;gap:8px}
+.rc-bar-lbl{font-size:11px;color:var(--muted);width:72px;flex-shrink:0}
+.rc-bar-bg{flex:1;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.rc-bar-fill{height:100%;border-radius:3px;transition:width 1s .4s var(--ease);width:0}
+
+/* PREVENTION */
+#prevention{background:var(--bg)}
+.prev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:16px;margin-top:34px}
+.prev-step{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 22px 24px;
+  position:relative;overflow:hidden;transition:all .25s}
+.prev-step:hover{border-color:var(--border2);transform:translateY(-2px)}
+.prev-step::before{content:attr(data-n);position:absolute;top:10px;right:16px;
+  font-family:var(--serif);font-size:50px;color:var(--muted2);line-height:1;opacity:.22}
+.prev-icon{font-size:26px;margin-bottom:12px;display:block}
+.prev-step h3{font-weight:600;font-size:16px;margin-bottom:7px}
+.prev-step p{font-size:13.5px;color:var(--muted);line-height:1.65}
+.helpline-box{background:linear-gradient(135deg,rgba(232,72,72,0.1),rgba(232,72,72,0.03));
+  border:1px solid rgba(232,72,72,0.18);border-radius:18px;padding:38px;margin-top:60px;text-align:center}
+.helpline-box h2{font-family:var(--serif);font-size:30px;margin-bottom:8px}
+.helpline-box p{color:var(--muted);font-size:14.5px;margin-bottom:26px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.7}
+.hn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:11px}
+.hn-item{background:var(--card);border:1px solid var(--border2);border-radius:10px;padding:15px 18px;text-align:center;transition:all .2s}
+.hn-item:hover{border-color:rgba(232,72,72,0.3);transform:translateY(-2px)}
+.hn-flag{font-size:18px;margin-bottom:3px}
+.hn-country{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.hn-num{font-family:var(--serif);font-size:17px;color:var(--red);margin-top:3px}
+.hn-tel{display:block;font-size:11px;color:var(--muted);margin-top:3px;text-decoration:none;transition:color .2s}
+.hn-tel:hover{color:var(--red)}
+
+/* QUIZ */
+#quiz{background:var(--bg2)}
+.quiz-box{background:var(--card);border:1px solid var(--border2);border-radius:18px;padding:34px 38px;max-width:660px;margin:38px auto 0}
+.q-prog-wrap{height:4px;background:var(--bg3);border-radius:2px;margin-bottom:26px;overflow:hidden}
+.q-prog{height:100%;background:linear-gradient(90deg,var(--red),var(--amber));border-radius:2px;transition:width .4s var(--ease);width:0}
+.quiz-q{font-family:var(--serif);font-size:22px;line-height:1.35;margin-bottom:22px}
+.quiz-opts{display:flex;flex-direction:column;gap:9px}
+.quiz-opt{background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:13px 17px;
+  cursor:pointer;font-size:14.5px;font-family:var(--sans);color:var(--text);text-align:left;transition:all .2s}
+.quiz-opt:hover:not(:disabled){border-color:var(--border2);background:var(--bg2)}
+.quiz-opt.correct{background:rgba(45,212,191,0.12);border-color:var(--teal);color:var(--teal)}
+.quiz-opt.wrong{background:rgba(232,72,72,0.12);border-color:var(--red);color:#f08080}
+.quiz-fb{margin-top:14px;padding:11px 15px;border-radius:8px;font-size:13.5px;line-height:1.6;display:none}
+.quiz-fb.show{display:block}
+.quiz-fb.c{background:rgba(45,212,191,0.09);border:1px solid rgba(45,212,191,0.2);color:#7ee8d9}
+.quiz-fb.w{background:rgba(232,72,72,0.09);border:1px solid rgba(232,72,72,0.2);color:#f08080}
+.quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:22px}
+.q-counter{font-size:13px;color:var(--muted)}
+.q-next{background:var(--red);color:#fff;border:none;border-radius:8px;padding:9px 22px;
+  font-size:13.5px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:all .2s}
+.q-next:hover{background:#d43e3e}
+.quiz-result{text-align:center;padding:8px 0}
+.q-score{font-family:var(--serif);font-size:52px;color:var(--red);margin-bottom:6px}
+.q-score-lbl{font-size:13px;color:var(--muted);margin-bottom:18px}
+.q-msg{font-size:16px;color:var(--text);margin-bottom:22px;line-height:1.6}
+
+/* TIMELINE */
+#timeline{background:var(--bg3)}
+.tl-wrap{position:relative;margin-top:38px;padding-left:38px}
+.tl-wrap::before{content:'';position:absolute;left:13px;top:0;bottom:0;width:2px;
+  background:linear-gradient(to bottom,var(--red),var(--amber),var(--teal))}
+.tl-item{position:relative;margin-bottom:30px}
+.tl-dot{position:absolute;left:-32px;top:9px;width:13px;height:13px;border-radius:50%;
+  border:2px solid var(--bg3);box-shadow:0 0 0 3px rgba(232,72,72,0.2)}
+.tl-card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:16px 20px;transition:all .2s}
+.tl-card:hover{border-color:var(--border2)}
+.tl-year{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:5px}
+.tl-title{font-family:var(--serif);font-size:19px;margin-bottom:5px}
+.tl-desc{font-size:13.5px;color:var(--muted);line-height:1.65}
+
+/* FOOTER */
+footer{background:var(--bg);border-top:1px solid var(--border);padding:46px 44px}
+.footer-inner{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:36px}
+.footer-brand p{font-size:13px;color:var(--muted);line-height:1.7;max-width:270px;margin-top:12px}
+.footer-col h4{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:13px}
+.footer-col a{display:block;font-size:13.5px;color:var(--muted2);text-decoration:none;margin-bottom:7px;transition:color .2s;cursor:pointer}
+.footer-col a:hover{color:var(--text)}
+.footer-bot{max-width:1140px;margin:28px auto 0;padding-top:22px;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.footer-bot p{font-size:11.5px;color:var(--muted2)}
+.footer-share{display:flex;gap:8px}
+.f-share-btn{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:6px 14px;
+  font-size:12px;color:var(--muted);cursor:pointer;font-family:var(--sans);transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.f-share-btn:hover{border-color:var(--border2);color:var(--text)}
+
+/* BACK TOP */
+#backTop{position:fixed;bottom:26px;right:26px;width:42px;height:42px;background:var(--card);
+  border:1px solid var(--border2);border-radius:50%;cursor:pointer;font-size:17px;color:var(--muted);
+  display:flex;align-items:center;justify-content:center;z-index:100;transition:all .25s;
+  opacity:0;transform:translateY(10px);pointer-events:none}
+#backTop.visible{opacity:1;transform:translateY(0);pointer-events:all}
+#backTop:hover{background:var(--red-dim);color:var(--red);border-color:rgba(232,72,72,0.35)}
+
+/* COOKIE */
+#cookie{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+  background:var(--card);border:1px solid var(--border2);border-radius:11px;
+  padding:13px 18px;display:flex;align-items:center;gap:14px;font-size:12.5px;color:var(--muted);
+  z-index:99;max-width:520px;width:calc(100% - 36px);box-shadow:0 8px 36px rgba(0,0,0,0.45);
+  transition:opacity .3s,transform .3s}
+#cookie.gone{opacity:0;transform:translateX(-50%) translateY(20px);pointer-events:none}
+.ck-btn{background:var(--red);color:#fff;border:none;border-radius:6px;padding:5px 13px;
+  font-size:12px;font-family:var(--sans);cursor:pointer;font-weight:600;white-space:nowrap}
+
+/* TOAST */
+#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--card);border:1px solid var(--border2);border-radius:10px;
+  padding:12px 20px;font-size:13.5px;color:var(--text);z-index:600;
+  opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:0 18px}
+  .nav-links,.search-btn .shortcut{display:none}
+  .hamburger{display:flex}
+  section{padding:60px 18px}
+  .hero{padding:108px 20px 56px}
+  .hero-stats{grid-template-columns:repeat(2,1fr)}
+  .footer-inner{grid-template-columns:1fr 1fr}
+  .bm-layout{grid-template-columns:1fr}
+  .m-body{padding:20px 20px 28px}
+}
+@media(max-width:560px){
+  .footer-inner{grid-template-columns:1fr}
+  .fact-grid{grid-template-columns:1fr}
+  .quiz-box{padding:22px 18px}
+  .hero-btns{flex-direction:column;width:100%;max-width:280px}
+  .btn-p,.btn-s{width:100%;justify-content:center}
+  .nav-cta{display:none}
+}
+
+/* GLOWING TEXT ANIMATION ON HERO */
+@keyframes shimmer{0%,100%{opacity:1}50%{opacity:.7}}
+.hero h1 em{animation:shimmer 3.5s ease-in-out infinite}
+
+/* LIGHTBOX */
+.lightbox-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:700;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  opacity:0;pointer-events:none;transition:opacity .25s;backdrop-filter:blur(16px)}
+.lightbox-overlay.open{opacity:1;pointer-events:all}
+.lightbox-img-wrap{position:relative;max-width:90vw;max-height:88vh;display:flex;align-items:center;justify-content:center}
+.lightbox-overlay img{max-width:90vw;max-height:85vh;object-fit:contain;border-radius:12px;
+  box-shadow:0 24px 80px rgba(0,0,0,0.8);transform:scale(.93);transition:transform .3s var(--ease)}
+.lightbox-overlay.open img{transform:scale(1)}
+.lightbox-close{position:absolute;top:-18px;right:-18px;width:36px;height:36px;border-radius:50%;
+  background:var(--card);border:1px solid var(--border2);cursor:pointer;font-size:15px;
+  color:var(--muted);display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:1}
+.lightbox-close:hover{background:var(--red-dim);color:var(--red);border-color:rgba(232,72,72,0.4)}
+.lightbox-caption{position:absolute;bottom:-36px;left:0;right:0;text-align:center;
+  font-size:13px;color:var(--muted);font-style:italic}
+.modal-hero-img-clickable{cursor:zoom-in!important;transition:opacity .2s}
+.modal-hero-img-clickable:hover{opacity:.88}
+</style>
+</head>
+<body>
+
+<div id="particles"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div id="progressBar"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" onclick="goToTop()"><span class="logo-dot"></span> ClearMind</a>
+  <div class="nav-links">
+    <a href="#drugs" onclick="goTo(event,'drugs')">Substances</a>
+    <a href="#signs" onclick="goTo(event,'signs')">Warning Signs</a>
+    <a href="#myths" onclick="goTo(event,'myths')">Myth Busters</a>
+    <a href="#bodymap" onclick="goTo(event,'bodymap')">Body Impact</a>
+    <a href="#overdose" onclick="goTo(event,'overdose')">Overdose Guide</a>
+    <a href="#riskchart" onclick="goTo(event,'riskchart')">Risk Chart</a>
+    <a href="#prevention" onclick="goTo(event,'prevention')">Prevention</a>
+    <a href="#quiz" onclick="goTo(event,'quiz')">Self-Test</a>
+    <a href="#timeline" onclick="goTo(event,'timeline')">Timeline</a>
+  </div>
+  <div class="nav-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
+    <button class="search-btn" onclick="openSearch()">
+      <svg class="si" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="position:static;transform:none;opacity:1"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      Search <kbd>💊</kbd>
+    </button>
+    <a class="nav-cta" href="#prevention" onclick="goTo(event,'prevention')">🆘 Get Help</a>
+  </div>
+  <button class="hamburger" id="hbg" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#drugs" onclick="goTo(event,'drugs')">Substances</a>
+  <a href="#signs" onclick="goTo(event,'signs')">Warning Signs</a>
+  <a href="#myths" onclick="goTo(event,'myths')">Myth Busters</a>
+  <a href="#bodymap" onclick="goTo(event,'bodymap')">Body Impact</a>
+  <a href="#overdose" onclick="goTo(event,'overdose')">Overdose Guide</a>
+  <a href="#riskchart" onclick="goTo(event,'riskchart')">Risk Chart</a>
+  <a href="#prevention" onclick="goTo(event,'prevention')">Prevention</a>
+  <a href="#quiz" onclick="goTo(event,'quiz')">Self-Test Quiz</a>
+  <a href="#timeline" onclick="goTo(event,'timeline')">Drug History</a>
+</div>
+
+<!-- SEARCH -->
+<div class="search-overlay" id="searchOverlay" onclick="handleSearchBg(event)">
+  <div class="search-box">
+    <button class="s-close" onclick="closeSearch()">✕</button>
+    <div class="search-input-wrap">
+      <svg class="si" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="position:absolute;left:16px;top:50%;transform:translateY(-50%);opacity:.4"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input id="searchInput" placeholder="Search any substance…" autocomplete="off" oninput="doSearch(this.value)">
+    </div>
+    <p class="search-hint">Press ESC to close · Click a result to open its full profile</p>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge"><span class="blink"></span> Public Health Awareness Initiative 2026</div>
+  <h1>Know the <em>truth</em> about harmful drugs</h1>
+  <p class="hero-sub">Science-backed information on the world's most dangerous substances — what they are, how they destroy the body, and how to protect yourself and those you love.</p>
+  <div class="hero-btns">
+    <a class="btn-p" href="#drugs" onclick="goTo(event,'drugs')">Explore All Substances ↓</a>
+    <a class="btn-s" href="#quiz" onclick="goTo(event,'quiz')">Take the Knowledge Test</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-cell"><div class="stat-num" data-target="35" data-suf="M+">0</div><div class="stat-label">People with drug use disorder</div></div>
+    <div class="stat-cell"><div class="stat-num" data-target="600" data-suf="K+">0</div><div class="stat-label">Drug-related deaths annually</div></div>
+    <div class="stat-cell"><div class="stat-num" data-target="185" data-suf="+">0</div><div class="stat-label">Countries reporting drug problems</div></div>
+    <div class="stat-cell"><div class="stat-num" data-target="85" data-suf="%">0</div><div class="stat-label">Of cases are preventable</div></div>
+  </div>
+  <div class="scroll-hint" onclick="goTo(event,'drugs')">↓</div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap"><div class="ticker-track" id="ticker"></div></div>
+
+<!-- DRUGS -->
+<section id="drugs">
+  <div class="sec-inner">
+    <div class="sec-tag reveal">Comprehensive Substance Guide</div>
+    <h2 class="sec-title reveal" id="drugCountTitle">25 Harmful Substances Covered</h2>
+    <p class="sec-sub reveal">Click any card to open the full substance profile — effects, body damage, addiction science, and recovery guidance.</p>
+    <div class="toolbar reveal">
+      <div class="filter-bar" id="filterBar"></div>
+      <div class="view-toggle">
+        <button class="view-btn active" onclick="setView('grid',this)" title="Grid">⊞</button>
+        <button class="view-btn" onclick="setView('list',this)" title="List">☰</button>
+      </div>
+    </div>
+    <div class="drugs-grid" id="drugsGrid"></div>
+  </div>
+</section>
+
+<!-- SIGNS -->
+<section id="signs">
+  <div class="sec-inner">
+    <div class="sec-tag reveal">Recognition & Awareness</div>
+    <h2 class="sec-title reveal">Warning Signs of Addiction</h2>
+    <p class="sec-sub reveal">Recognising these early signs is crucial to getting help before dependency becomes life-altering or fatal.</p>
+    <div class="signs-grid">
+      <div class="sign-card reveal"><span class="sign-icon">🧠</span><div class="sign-title">Compulsive Craving</div><div class="sign-desc">Intense urges to use the substance that override rational thought, concentration, and daily functioning.</div></div>
+      <div class="sign-card reveal"><span class="sign-icon">📉</span><div class="sign-title">Neglecting Responsibilities</div><div class="sign-desc">Missing work, school, or family obligations. Loss of interest in hobbies and previously enjoyed activities.</div></div>
+      <div class="sign-card reveal"><span class="sign-icon">🔺</span><div class="sign-title">Increasing Tolerance</div><div class="sign-desc">Needing larger amounts to achieve the same effect as the body builds physiological resistance.</div></div>
+      <div class="sign-card reveal"><span class="sign-icon">💸</span><div class="sign-title">Financial Problems</div><div class="sign-desc">Unexplained money shortages, selling possessions, or regularly borrowing money with no explanation.</div></div>
+      <div class="sign-card reveal"><span class="sign-icon">🔒</span><div class="sign-title">Withdrawal Symptoms</div><div class="sign-desc">Physical or psychological distress — tremors, sweating, nausea, anxiety — when attempting to stop use.</div></div>
+      <div class="sign-card reveal"><span class="sign-icon">👥</span><div class="sign-title">Social Withdrawal</div><div class="sign-desc">Isolating from family, keeping secrets about activities, or changing friend groups to enable substance use.</div></div>
+      <div class="sign-card reveal"><span class="sign-icon">😤</span><div class="sign-title">Extreme Mood Swings</div><div class="sign-desc">Rapid swings between euphoria and severe irritability, depression, paranoia, or uncontrolled aggression.</div></div>
+      <div class="sign-card reveal"><span class="sign-icon">🏥</span><div class="sign-title">Physical Decline</div><div class="sign-desc">Rapid weight loss, dental decay, poor hygiene, bloodshot eyes, or extreme changes in energy and sleep.</div></div>
+      <div class="sign-card reveal"><span class="sign-icon">🔁</span><div class="sign-title">Failed Quit Attempts</div><div class="sign-desc">Repeatedly trying and failing to cut down or stop despite strong and sincere intent to do so.</div></div>
+      <div class="sign-card reveal"><span class="sign-icon">⚠️</span><div class="sign-title">Reckless Behaviour</div><div class="sign-desc">Engaging in dangerous activities under the influence, or putting oneself at risk to obtain the substance.</div></div>
+      <div class="sign-card reveal"><span class="sign-icon">😴</span><div class="sign-title">Sleep Disruption</div><div class="sign-desc">Severe insomnia or hypersomnia, erratic sleep schedules, or sleeping at unusual hours consistently.</div></div>
+      <div class="sign-card reveal"><span class="sign-icon">🕵️</span><div class="sign-title">Secretive Behaviour</div><div class="sign-desc">Hiding substances, lying about activities, going to unusual places, or becoming defensive when questioned.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MYTHS BUSTER -->
+<section id="myths">
+  <div class="sec-inner">
+    <div class="sec-tag reveal">Fact Check</div>
+    <h2 class="sec-title reveal">Drug Myths vs. Reality</h2>
+    <p class="sec-sub reveal">Dangerous misconceptions cost lives. Here's what the science actually says about common drug myths.</p>
+    <div class="myths-grid" id="mythsGrid"></div>
+  </div>
+</section>
+
+<!-- BODY IMPACT MAP -->
+<section id="bodymap">
+  <div class="sec-inner">
+    <div class="sec-tag reveal">Medical Impact</div>
+    <h2 class="sec-title reveal">How Drugs Damage the Body</h2>
+    <p class="sec-sub reveal">Select any organ system to see which drugs damage it and exactly how.</p>
+    <div class="bm-layout reveal">
+      <div class="bm-list" id="bmList"></div>
+      <div class="bm-panel" id="bmPanel">
+        <div class="bm-panel-title">← Select an organ system</div>
+        <div class="bm-panel-desc">Click any item on the left to explore which substances damage that part of the body and the specific mechanisms of harm.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OVERDOSE GUIDE -->
+<section id="overdose">
+  <div class="sec-inner">
+    <div class="sec-tag reveal">Emergency Response</div>
+    <h2 class="sec-title reveal">Overdose Response Guide</h2>
+    <p class="sec-sub reveal">Knowing what to do during an overdose can save a life. Act immediately — every minute matters.</p>
+    <div class="od-grid reveal">
+      <div class="od-card od-r">
+        <div class="od-title">🚨 Call Emergency Services</div>
+        <ol class="od-steps">
+          <li><span class="od-n">1</span>Call 999 (UK) / 911 (US) / 119 (BD) immediately</li>
+          <li><span class="od-n">2</span>State it is a drug overdose and substances taken if known</li>
+          <li><span class="od-n">3</span>Stay on the line — follow dispatcher instructions precisely</li>
+          <li><span class="od-n">4</span>Do not leave the person alone under any circumstances</li>
+        </ol>
+      </div>
+      <div class="od-card od-a">
+        <div class="od-title">💊 Opioid Overdose (Heroin/Fentanyl)</div>
+        <ol class="od-steps">
+          <li><span class="od-n">1</span>Administer Naloxone (Narcan) nasal spray if available</li>
+          <li><span class="od-n">2</span>Place in recovery position if breathing (on side)</li>
+          <li><span class="od-n">3</span>Give rescue breaths if not breathing at all</li>
+          <li><span class="od-n">4</span>Repeat naloxone after 2–3 min if no response — fentanyl requires multiple doses</li>
+        </ol>
+      </div>
+      <div class="od-card od-t">
+        <div class="od-title">🫀 Stimulant Overdose (Cocaine/Meth)</div>
+        <ol class="od-steps">
+          <li><span class="od-n">1</span>Keep the person calm and cool — overheating is lethal</li>
+          <li><span class="od-n">2</span>Apply cold wet cloths to neck, armpits, and groin</li>
+          <li><span class="od-n">3</span>Do NOT restrain — causes cardiac stress and injury</li>
+          <li><span class="od-n">4</span>If seizure: protect the head, time it, call EMS immediately</li>
+        </ol>
+      </div>
+      <div class="od-card od-p">
+        <div class="od-title">🔵 Depressant Overdose (Alcohol/Benzos/GHB)</div>
+        <ol class="od-steps">
+          <li><span class="od-n">1</span>Never leave unconscious person face-up — choking risk</li>
+          <li><span class="od-n">2</span>Place in recovery position immediately (on their side)</li>
+          <li><span class="od-n">3</span>Monitor breathing every 2–3 minutes until EMS arrives</li>
+          <li><span class="od-n">4</span>Do NOT give coffee or attempt to "walk it off" — dangerous</li>
+        </ol>
+      </div>
+    </div>
+    <div class="emergency-strip reveal">
+      <div class="es-title">📞 Emergency Numbers — Tap to Call</div>
+      <div class="es-num"><div class="es-flag">🇺🇸</div><div class="es-country">United States</div><div class="es-call">911</div><a class="es-link" href="tel:911">Tap to call 911 →</a></div>
+      <div class="es-num"><div class="es-flag">🇬🇧</div><div class="es-country">United Kingdom</div><div class="es-call">999</div><a class="es-link" href="tel:999">Tap to call 999 →</a></div>
+      <div class="es-num"><div class="es-flag">🇧🇩</div><div class="es-country">Bangladesh</div><div class="es-call">119</div><a class="es-link" href="tel:119">Tap to call 119 →</a></div>
+      <div class="es-num"><div class="es-flag">🇦🇺</div><div class="es-country">Australia</div><div class="es-call">000</div><a class="es-link" href="tel:000">Tap to call 000 →</a></div>
+      <div class="es-num"><div class="es-flag">🇨🇦</div><div class="es-country">Canada</div><div class="es-call">911</div><a class="es-link" href="tel:911">Tap to call 911 →</a></div>
+      <div class="es-num"><div class="es-flag">🇮🇳</div><div class="es-country">India</div><div class="es-call">112</div><a class="es-link" href="tel:112">Tap to call 112 →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- RISK COMPARISON CHART -->
+<section id="riskchart">
+  <div class="sec-inner">
+    <div class="sec-tag reveal">Comparative Analysis</div>
+    <h2 class="sec-title reveal">Substance Risk Comparison</h2>
+    <p class="sec-sub reveal">Scientific harm ratings across addiction potential, physical damage, social harm, and overdose lethality — based on research by Prof. David Nutt et al.</p>
+    <div class="rc-grid" id="rcGrid"></div>
+  </div>
+</section>
+
+<!-- PREVENTION -->
+<section id="prevention">
+  <div class="sec-inner">
+    <div class="sec-tag reveal">Prevention & Recovery</div>
+    <h2 class="sec-title reveal">How to Protect Yourself & Others</h2>
+    <p class="sec-sub reveal">Prevention is achievable through awareness, strong community bonds, and the right support structures.</p>
+    <div class="prev-grid">
+      <div class="prev-step reveal" data-n="01"><span class="prev-icon">📚</span><h3>Educate Yourself</h3><p>Understanding addiction as a brain disease removes stigma and helps identify risks early. Knowledge is the single most powerful protective barrier.</p></div>
+      <div class="prev-step reveal" data-n="02"><span class="prev-icon">🤝</span><h3>Build a Support Network</h3><p>Strong social bonds are the most protective factor against addiction. Surround yourself with people who support your wellbeing and to whom you can speak openly.</p></div>
+      <div class="prev-step reveal" data-n="03"><span class="prev-icon">🧘</span><h3>Manage Stress Healthily</h3><p>Most substance use starts as a coping mechanism for stress. Exercise, mindfulness, creative outlets, and therapy are proven effective alternatives.</p></div>
+      <div class="prev-step reveal" data-n="04"><span class="prev-icon">🗣️</span><h3>Seek Help Early</h3><p>If you or someone you know shows warning signs, act immediately. Early intervention dramatically improves recovery outcomes — don't wait for a crisis.</p></div>
+      <div class="prev-step reveal" data-n="05"><span class="prev-icon">💊</span><h3>Be Cautious with Prescriptions</h3><p>Even prescription opioids and benzodiazepines carry serious addiction potential. Always follow dosage instructions and never share your medications.</p></div>
+      <div class="prev-step reveal" data-n="06"><span class="prev-icon">🏡</span><h3>Open Family Conversations</h3><p>Children who can discuss drugs openly at home are far less likely to experiment. Provide facts, remove stigma, and keep the conversation ongoing.</p></div>
+      <div class="prev-step reveal" data-n="07"><span class="prev-icon">🏋️</span><h3>Physical Wellbeing</h3><p>Regular exercise raises dopamine naturally, reducing the brain's need to seek artificial stimulation. Physical health is a powerful addiction prevention tool.</p></div>
+      <div class="prev-step reveal" data-n="08"><span class="prev-icon">🔬</span><h3>Test Before You Use</h3><p>If substances are present in your environment, fentanyl test strips and drug checking services save lives by detecting deadly adulterants before use.</p></div>
+    </div>
+    <div class="helpline-box reveal">
+      <h2>You Are Not Alone. Help Is Here.</h2>
+      <p>If you or someone you care about is struggling with addiction, reach out immediately. Free, confidential support is available 24 hours a day, 7 days a week.</p>
+      <div class="hn-grid">
+        <div class="hn-item"><div class="hn-flag">🇺🇸</div><div class="hn-country">United States — SAMHSA</div><div class="hn-num">1-800-662-4357</div><a class="hn-tel" href="tel:18006624357">Tap to call →</a></div>
+        <div class="hn-item"><div class="hn-flag">🇬🇧</div><div class="hn-country">United Kingdom — Frank</div><div class="hn-num">0300 123 6600</div><a class="hn-tel" href="tel:03001236600">Tap to call →</a></div>
+        <div class="hn-item"><div class="hn-flag">🇧🇩</div><div class="hn-country">Bangladesh — DGDA</div><div class="hn-num">16789</div><a class="hn-tel" href="tel:16789">Tap to call →</a></div>
+        <div class="hn-item"><div class="hn-flag">🇦🇺</div><div class="hn-country">Australia — DrugInfo</div><div class="hn-num">1800 250 015</div><a class="hn-tel" href="tel:1800250015">Tap to call →</a></div>
+        <div class="hn-item"><div class="hn-flag">🇨🇦</div><div class="hn-country">Canada — ConnexOntario</div><div class="hn-num">1-866-531-2600</div><a class="hn-tel" href="tel:18665312600">Tap to call →</a></div>
+        <div class="hn-item"><div class="hn-flag">🇮🇳</div><div class="hn-country">India — iCall</div><div class="hn-num">9152987821</div><a class="hn-tel" href="tel:9152987821">Tap to call →</a></div>
+        <div class="hn-item"><div class="hn-flag">💬</div><div class="hn-country">Crisis Text Line (US)</div><div class="hn-num">Text HOME</div><a class="hn-tel" href="sms:741741&body=HOME">→ 741741</a></div>
+        <div class="hn-item"><div class="hn-flag">🌐</div><div class="hn-country">International SMART</div><div class="hn-num">smartrecovery.org</div><a class="hn-tel" href="https://www.smartrecovery.org" target="_blank">Visit website →</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+  <div class="sec-inner">
+    <div class="sec-tag reveal">Knowledge Check</div>
+    <h2 class="sec-title reveal">Test Your Drug Awareness</h2>
+    <p class="sec-sub reveal">10 evidence-based questions. See how well you understand the real risks of harmful substances.</p>
+    <div class="quiz-box reveal">
+      <div class="q-prog-wrap"><div class="q-prog" id="qProg"></div></div>
+      <div id="quizContent"></div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="sec-inner">
+    <div class="sec-tag reveal">Historical Context</div>
+    <h2 class="sec-title reveal">The Drug Crisis: A Timeline</h2>
+    <p class="sec-sub reveal">Understanding how the global drug problem evolved helps us respond more effectively today.</p>
+    <div class="tl-wrap" id="tlWrap"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a class="nav-logo" onclick="goToTop()" style="display:inline-flex"><span class="logo-dot"></span> ClearMind</a>
+      <p>A public health initiative providing evidence-based information about harmful substances, addiction science, and prevention strategies.</p>
+      <div class="footer-share" style="margin-top:14px">
+        <button class="f-share-btn" onclick="shareUrl()">🔗 Share this site</button>
+        <button class="f-share-btn" onclick="printPage()">🖨️ Print</button>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Critical Substances</h4>
+      <a onclick="jumpDrug('Heroin')" style="color: #fd7c7c;">Heroin</a>
+      <a onclick="jumpDrug('Fentanyl')" style="color: #fd7c7c;">Fentanyl</a>
+      <a onclick="jumpDrug('Methamphetamine')" style="color: #fd7c7c;">Methamphetamine</a>
+      <a onclick="jumpDrug('Cocaine')" style="color: #fd7c7c;">Cocaine</a>
+      <a onclick="jumpDrug('GHB / GBL')" style="color: #fd7c7c;">GHB / GBL</a>
+      <a onclick="jumpDrug('Synthetic Cannabinoids')" style="color: #fd7c7c;">Synthetic Cannabinoids</a>
+    </div>
+    <div class="footer-col">
+      <h4>Other Substances</h4>
+      <a onclick="jumpDrug('Cannabis')" style="color: #fd7c7c;">Cannabis</a>
+      <a onclick="jumpDrug('Alcohol')" style="color: #fd7c7c;">Alcohol</a>
+      <a onclick="jumpDrug('MDMA / Ecstasy')" style="color: #fd7c7c;">MDMA / Ecstasy</a>
+      <a onclick="jumpDrug('Benzodiazepines')" style="color: #fd7c7c;">Benzodiazepines</a>
+      <a onclick="jumpDrug('Ketamine')" style="color: #fd7c7c;">Ketamine</a>
+      <a onclick="jumpDrug('Tobacco / Nicotine')" style="color: #fd7c7c;">Tobacco / Nicotine</a>
+      <a onclick="jumpDrug('LSD')" style="color: #fd7c7c;">LSD</a>
+      <a onclick="jumpDrug('Psilocybin (Magic Mushrooms)')" style="color: #fd7c7c;">Psilocybin</a>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <a href="#signs" onclick="goTo(event,'signs')" style="color: #fd7c7c;">Warning Signs</a>
+      <a href="#myths" onclick="goTo(event,'myths')" style="color: #fd7c7c;">Myth Busters</a>
+      <a href="#bodymap" onclick="goTo(event,'bodymap')" style="color: #fd7c7c;">Body Impact Map</a>
+      <a href="#overdose" onclick="goTo(event,'overdose')" style="color: #fd7c7c;">Overdose Response</a>
+      <a href="#riskchart" onclick="goTo(event,'riskchart')" style="color: #fd7c7c;">Risk Comparison</a>
+      <a href="#prevention" onclick="goTo(event,'prevention')" style="color: #fd7c7c;">Prevention Guide</a>
+      <a href="#quiz" onclick="goTo(event,'quiz')" style="color: #fd7c7c;">Knowledge Self-Test</a>
+      <a href="#timeline" onclick="goTo(event,'timeline')" style="color: #fd7c7c;">Drug History</a>
+    </div>
+  </div>
+  <div class="footer-bot">
+    <p style="color: #fd7c7c;">© 2025 ClearMind Drug Awareness Initiative · Educational purposes only · Not a substitute for professional medical advice</p>
+    <p style="color: #fd7c7c;">Sources: WHO · NIDA · EMCDDA · UNODC · David Nutt et al. (The Lancet)</p>
+  </div>
+</footer>
+
+<button id="backTop" onclick="goToTop()" title="Back to top">↑</button>
+<div id="cookie"><span>🍪 No cookies, no tracking — purely educational content.</span><button class="ck-btn" onclick="dismissCookie()">Got it</button></div>
+<div id="toast"></div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="mOverlay" onclick="handleMBg(event)">
+  <div class="modal" id="modal">
+    <div class="modal-hero" id="mHero"><div class="modal-hero-bot"></div></div>
+    <div class="m-body">
+      <div class="m-header">
+        <div class="m-title"><h2 id="mName"></h2><p id="mAlso"></p></div>
+        <button class="m-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="m-meta" id="mMeta"></div>
+      <div class="m-tabs" id="mTabs"></div>
+      <div id="mContent"></div>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox-overlay" id="lightboxOverlay" onclick="handleLightboxBg(event)">
+  <div class="lightbox-img-wrap" id="lightboxWrap">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <img id="lightboxImg" src="" alt="">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+//  DRUG DATA — 25 SUBSTANCES
+// ═══════════════════════════════════════
+const DRUGS = [
+  {id:1,name:"Heroin",also:"Smack, Junk, Brown Sugar, H, Horse",type:"opioid",danger:"critical",emoji:"⚗",img:"https://media.istockphoto.com/id/468584086/photo/a-drug-syringe-and-a-spoon-with-cooked-heroin.jpg?s=612x612&w=0&k=20&c=gsU38jejMaW7uZKQXFYK0FReyFtUOD321LIceWb5lSY=",
+   tags:["Opioid","Injected/Snorted/Smoked","Extremely Addictive","Class A"],
+   short:"A powerful illegal opioid derived from morphine. Physical dependency can form after just a few uses and overdose can kill within minutes.",
+   warning:"Heroin overdose causes respiratory failure and death within minutes. It is among the top causes of drug-related mortality globally.",
+   what:"Heroin is an illegal opioid synthesised from morphine, extracted from opium poppies. It appears as white or brownish powder or black tar. It can be injected, snorted, or smoked — injection carries the highest overdose and disease transmission risk.",
+   harms:["Slows breathing to fatal rates — respiratory depression kills in minutes","Causes severe liver and kidney damage with prolonged use","Injecting spreads HIV, Hepatitis B & C, and serious bacterial infections","Destroys the brain's natural opioid receptors — natural pleasure becomes nearly impossible","Long-term cognitive impairment and deterioration of white brain matter","Collapsed veins, abscesses, and chronic infections at injection sites"],
+   addiction:"Physical dependency can develop after just 2–3 uses. Withdrawal begins within hours: muscle agony, shaking, vomiting, extreme insomnia. Psychological craving persists for years — relapse rates without structured support exceed 80%.",
+   prevention:["Never try heroin even once — dependency can begin after a single use","Keep Naloxone (Narcan) accessible — it reverses opioid overdose within minutes","Medication-Assisted Treatment (MAT) with buprenorphine shows strong sustained recovery rates","Structured outpatient therapy and peer support are essential for long-term sobriety","Safe needle exchange programmes reduce infection and connect users to services"],
+   facts:{Class:"Opioid",Legal:"Class A / Schedule I",Origin:"Opium poppy (morphine derivative)","Addiction Potential":"Extreme","Lethal Dose":"Very low","Withdrawal":"Severe — onset 6–24 hrs"}},
+
+  {id:2,name:"Cocaine",also:"Coke, Snow, Blow, Charlie, Crack (freebase form)",type:"stimulant",danger:"critical",emoji:"◆",img:"https://cdn.rehabfiles.com/sites/sanctuarylodge/wp-content/uploads/2025/04/cocaine-powder-and-roll-on-table.jpeg",
+   tags:["Stimulant","Snorted/Injected","Class A","Cardiac Risk"],
+   short:"A powerful stimulant producing intense, short-lived euphoria and severe cardiovascular damage. Cardiac arrest risk exists even on first use.",
+   warning:"Cocaine can cause fatal cardiac arrest or stroke even in young, healthy individuals — including during first-time use.",
+   what:"Cocaine is a stimulant extracted from coca leaves. As a powder it is snorted or injected; crack cocaine is smoked. It blocks dopamine reuptake producing brief euphoria (15–30 min). Modern street cocaine is increasingly contaminated with fentanyl.",
+   harms:["Dramatically raises heart rate and blood pressure — major risk of heart attack and stroke","Destroys the nasal septum and nasal passages in chronic snorters","Reduces blood flow to the brain causing strokes and cognitive decline","Severe paranoia and tactile hallucinations ('cocaine bugs' — feeling insects under skin)","Depletes brain's dopamine reward circuits causing persistent depression between uses","Crack cocaine severely damages lung tissue and can cause pulmonary haemorrhage"],
+   addiction:"Psychological dependency develops rapidly. The crash after use — exhaustion, depression, intense craving — drives bingeing. Cocaine withdrawal is primarily psychological but can induce severe depression and suicidal ideation lasting weeks.",
+   prevention:["Understand the euphoria is brief but brain damage accumulates permanently","Cognitive Behavioural Therapy (CBT) is highly effective for cocaine dependency","Avoid social environments where cocaine use is normalised — peer context is a major risk factor","Contingency management therapy (rewards for negative drug tests) shows measurable success","Contact SAMHSA (1-800-662-4357) for confidential treatment referrals"],
+   facts:{Class:"Stimulant",Legal:"Class A / Schedule II",Origin:"Coca leaf extract","Addiction Potential":"Very High","Lethal Dose":"Moderate","Withdrawal":"Psychological crash — severe depression"}},
+
+  {id:3,name:"Methamphetamine",also:"Crystal Meth, Ice, Speed, Tina, Crank, Glass",type:"stimulant",danger:"critical",emoji:"◇",img:"https://upload.wikimedia.org/wikipedia/commons/2/2d/Crystal_Meth.jpg",
+   tags:["Stimulant","Smoked/Injected","Class A","Extreme Neurotoxicity"],
+   short:"A synthetic stimulant releasing 3× more dopamine than cocaine, causing devastating psychosis, accelerated physical decay, and extreme addiction.",
+   warning:"Meth causes visible physical deterioration — users can appear decades older within months. A single use can trigger lasting psychosis.",
+   what:"Methamphetamine is a synthetic CNS stimulant. Crystal meth resembles ice crystals and is smoked, injected, snorted, or swallowed. It produces an intense, prolonged high (8–12 hours) by flooding the brain with dopamine — 3× the amount produced by cocaine.",
+   harms:["'Meth mouth' — catastrophic dental decay from dry mouth, grinding, and hygiene neglect","Severe psychosis including paranoia, hallucinations, and violent behaviour ('tweaking')","Dramatically accelerates skin aging and causes open sores from compulsive skin-picking","Depletes the brain's dopamine system — months of depression (anhedonia) when not using","Hyperthermia, cardiovascular failure, and permanent neurotoxic brain damage","Parkinson's-like neurological symptoms appear in long-term users"],
+   addiction:"Among the most psychologically addictive substances known. The crash after a binge lasts days. Extended binges without sleep or food ('tweaking') cause acute psychosis. The brain's reward system requires 1–2 years to begin recovering.",
+   prevention:["Recognise that meth's euphoria depletes the brain's own pleasure reserves permanently","Matrix Model outpatient therapy is specifically designed for stimulant addiction recovery","Family engagement in treatment significantly improves sustained recovery outcomes","Meth-induced psychosis requires professional psychiatric care — willpower is insufficient","Methamphetamine Anonymous meetings provide peer support specifically for meth users"],
+   facts:{Class:"Stimulant",Legal:"Class A / Schedule II",Origin:"Synthetic","Addiction Potential":"Extreme","Lethal Dose":"Moderate-High","Withdrawal":"Severe psychological crash — days long"}},
+
+  {id:4,name:"Fentanyl",also:"China White, Apache, Press Pills, IMF",type:"opioid",danger:"critical",emoji:"⬟",img:"https://www.dea.gov/sites/default/files/styles/wysiwyg/public/2021-04/AdobeStock_295203287.jpeg?itok=QoLPnN1U",
+   tags:["Synthetic Opioid","Pressed Pills/Powder","Class A","Lethal in Microdoses"],
+   short:"50–100× more potent than morphine — a dose invisible to the naked eye can kill. Now the primary driver of overdose deaths globally.",
+   warning:"A lethal dose of fentanyl is 2 milligrams — smaller than a few grains of salt. It is now routinely found in counterfeit pills, cocaine, and MDMA.",
+   what:"Fentanyl is a synthetic opioid originally created for severe cancer pain. Illicitly-manufactured fentanyl (IMF) is now pressed into fake pills designed to look like Xanax, Percocet, and Adderall. Users frequently take fentanyl without knowing it.",
+   harms:["Respiratory failure in minutes — the margin between a high and a fatal dose is invisible","Extreme dependency — forms faster and is harder to overcome than heroin","Severe hormonal disruption affecting the endocrine and reproductive systems","Hypoxia (oxygen starvation) during overdose causes permanent brain damage in survivors","Counterfeit pill contamination means any pill bought outside a pharmacy may contain fentanyl"],
+   addiction:"Fentanyl dependency forms faster than most opioids due to extreme potency. Withdrawal is severe and medically dangerous. Medication-Assisted Treatment with buprenorphine or methadone is essential — cold turkey is life-threatening.",
+   prevention:["Never take any pill not dispensed by a licensed pharmacist in a sealed container","Carry Naloxone (Narcan) — multiple doses may be required to reverse fentanyl overdose","Use fentanyl test strips to detect contamination in any substance before use","Never use opioids alone — have someone present who can administer naloxone if needed","Advocate for fentanyl test strip access and community naloxone distribution"],
+   facts:{Class:"Synthetic Opioid",Legal:"Class A / Schedule II (pharma)",Origin:"100× morphine potency","Addiction Potential":"Extreme","Lethal Dose":"~2mg — invisible to naked eye","Withdrawal":"Severe — medical supervision essential"}},
+
+  {id:5,name:"Cannabis",also:"Marijuana, Weed, Ganja, Hashish, Skunk, Pot",type:"cannabis",danger:"moderate",emoji:"⬡",img:"https://upload.wikimedia.org/wikipedia/commons/9/9b/Cannabis_plant.jpg",
+   tags:["Cannabis","Smoked/Edible","Moderate Dependency","Psychosis Risk"],
+   short:"The world's most widely used illicit drug. Modern high-potency strains carry real risks, especially psychosis and developmental harm in young people.",
+   warning:"High-potency cannabis (skunk) significantly raises psychosis and schizophrenia risk — particularly in adolescents and those with genetic vulnerability.",
+   what:"Cannabis contains THC acting on endocannabinoid receptors. Modern high-potency strains are far more powerful than cannabis of previous decades. It is consumed by smoking, vaporising, or in edibles. While legal in some jurisdictions, it carries real health risks often underestimated.",
+   harms:["Heavy adolescent use impairs brain development — measurable IQ loss and memory deficits","High-potency THC substantially increases risk of psychosis and schizophrenia-spectrum disorders","Smoking cannabis damages lungs comparably to tobacco — chronic bronchitis is common","Cannabis Use Disorder affects ~9% of all users and ~17% of those who start in adolescence","Impairs driving comparably to alcohol — significant cause of road accidents","Linked to low birth weight and developmental problems when used during pregnancy"],
+   addiction:"Cannabis Use Disorder (CUD) involves inability to reduce use despite consequences and withdrawal symptoms including irritability, insomnia, and appetite loss. Growing potency has significantly increased addiction rates over the past decade.",
+   prevention:["Delay first use as long as possible — adolescent brains are most vulnerable to lasting harm","Avoid high-THC, low-CBD products — CBD appears to partially counteract THC's harmful effects","Never drive after cannabis use — reaction time and judgement are substantially impaired","CBT and Motivational Enhancement Therapy are effective treatments for Cannabis Use Disorder","If you experience paranoia or psychotic symptoms after use, stop immediately and seek evaluation"],
+   facts:{Class:"Cannabinoid",Legal:"Varies by jurisdiction",Origin:"Cannabis sativa plant","Addiction Potential":"Moderate","Lethal Dose":"No direct lethal dose","Withdrawal":"Mild-Moderate (psychological)"}},
+
+  {id:6,name:"Alcohol",also:"Ethanol, Spirits, Beer, Wine — legal but widely abused",type:"depressant",danger:"high",emoji:"⬬",img:"https://www.conehealth.com/app/files/public/9444/7-Things-Drinking-Alcohol-Does-to-Your-Body.jpg",
+   tags:["Depressant","Legal / Widely Abused","Group 1 Carcinogen","Fatal Withdrawal Risk"],
+   short:"The world's most socially normalised addictive substance. Chronic abuse causes more disease and death than most illegal drugs combined.",
+   warning:"Alcohol withdrawal in a physically dependent person can cause fatal seizures. Medical supervision is essential for detox — never stop cold turkey.",
+   what:"Ethanol is a legal CNS depressant. The most widely consumed psychoactive substance globally. Alcohol Use Disorder (AUD) affects 280+ million people and contributes to over 200 disease and injury conditions — yet its legal status often masks its true harm.",
+   harms:["Causes alcoholic liver disease progressing to cirrhosis and liver failure","Direct cardiotoxin — causes cardiomyopathy and heart failure with chronic use","Measurably shrinks brain volume — heavy drinkers show progressive brain tissue loss","WHO Group 1 carcinogen: definitively causes liver, breast, bowel, mouth, throat, and oesophageal cancers","Wernicke-Korsakoff syndrome — severe irreversible brain damage from thiamine deficiency","Fetal Alcohol Spectrum Disorder (FASD) is the leading preventable cause of intellectual disability"],
+   addiction:"Alcohol dependency develops through tolerance and physical adaptation. Withdrawal can cause fatal seizures (delirium tremens). Psychological dependency involves intense cravings and complete life disruption. The social normalisation of alcohol makes seeking help uniquely difficult.",
+   prevention:["Follow guidelines: no more than 14 units/week (UK) with several alcohol-free days","Never drink during pregnancy — no amount has been proven safe for the developing fetus","Medical detox is mandatory for dependent drinkers — stopping suddenly can be fatal","AA and SMART Recovery offer free, accessible, community-based ongoing support","Brief intervention by a GP — a 5-minute conversation — has strong evidence for reducing harmful drinking"],
+   facts:{Class:"CNS Depressant",Legal:"Legal (age-restricted)",Origin:"Fermented ethanol","Addiction Potential":"High","Lethal Dose":"Variable (BAC ~0.45%)","Withdrawal":"Potentially fatal — must be supervised"}},
+
+  {id:7,name:"MDMA / Ecstasy",also:"Molly, X, Pills, E, Mandy, MD",type:"stimulant",danger:"high",emoji:"◈",img:"https://cdn.adf.org.au/media/images/pure-mdma-social.2e16d0ba.fill-1200x1200.webp",
+   tags:["Empathogen/Stimulant","Pills/Powder","Neurotoxic","Adulterant Risk"],
+   short:"A synthetic psychoactive causing euphoria and emotional openness. Neurotoxic with repeated use and carries serious overheating and cardiac risks.",
+   warning:"Most street 'ecstasy' contains dangerous adulterants including fentanyl and methamphetamine. Many deaths occur in first-time users.",
+   what:"MDMA floods the brain with serotonin, dopamine, and norepinephrine producing 3–5 hours of euphoria and emotional openness. Street pills frequently contain little actual MDMA and instead contain highly dangerous substitutes including PMA, fentanyl, and methamphetamine.",
+   harms:["Dangerous hyperthermia (overheating) — leading cause of MDMA-related deaths","Hyponatremia — dangerously low blood sodium from over-hydration whilst dancing","Neurotoxic with repeated use — damages serotonin neurons causing lasting depression and memory loss","Fatal serotonin syndrome when combined with SSRIs, MAOIs, or lithium","'Comedowns': 2–3 days of deep depression as serotonin levels crash ('suicide Tuesday')","Cardiac arrhythmias — risky in people with undiagnosed heart conditions"],
+   addiction:"MDMA is moderately addictive. Compulsive use accelerates neurotoxicity while reducing positive effects. Many heavy users develop persistent depression, anxiety, and significant memory impairment.",
+   prevention:["Use drug checking services to test for dangerous adulterants before any use","Space uses at least 3 months apart — frequency drives neurotoxicity, not just dose","Never combine with SSRIs, MAOIs, or lithium — risk of fatal serotonin syndrome","Stay cool, rest regularly, sip water slowly — over-hydration is also dangerous","Seek medical help if comedown depression is severe or persists more than a week"],
+   facts:{Class:"Empathogen/Stimulant",Legal:"Class A / Schedule I",Origin:"Synthetic","Addiction Potential":"Moderate","Lethal Dose":"Variable (heat + hydration dependent)","Withdrawal":"Psychological depression (days)"}},
+
+  {id:8,name:"Benzodiazepines",also:"Xanax, Valium, Klonopin, Diazepam, Ativan, Clonazepam",type:"depressant",danger:"high",emoji:"▣",img:"https://ysm-res.cloudinary.com/image/upload/ar_16:9,c_fill,dpr_3.0,f_auto,g_faces:auto,q_auto:eco,w_500/v1/yms/prod/fe1a90a6-2429-4df8-b9ef-8265bd32d946",
+   tags:["Depressant","Prescription / Widely Abused","Fatal Withdrawal Risk","Schedule IV"],
+   short:"Prescribed for anxiety and insomnia but highly addictive — dependency can form in weeks. Withdrawal without supervision can be fatal.",
+   warning:"Like alcohol, benzodiazepine withdrawal can cause life-threatening seizures. Never stop abruptly if physically dependent — medically supervised tapering is essential.",
+   what:"Benzodiazepines enhance GABA — the brain's primary inhibitory neurotransmitter. They are legally prescribed but widely diverted. Counterfeit 'Xanax' pressed with fentanyl is now a major cause of overdose deaths.",
+   harms:["Physical dependency can develop in as little as 2–4 weeks of regular daily use","Severe cognitive impairment including memory blackouts and confusion","Long-term use significantly increases dementia risk, especially in older adults","Fatal respiratory depression when combined with opioids or alcohol — common cause of overdose","Paradoxical reactions in some users: increased anxiety, aggression, and disinhibition","Falls and serious injuries from sedation — major risk in elderly patients"],
+   addiction:"Benzodiazepine dependency is physiological. Tolerance builds rapidly. Withdrawal includes seizures, psychosis, and cardiac events. Slow tapering over weeks to months under medical supervision is required — this cannot be rushed.",
+   prevention:["Only take benzos as prescribed — never increase dose without doctor guidance","Request short-term prescriptions only — dependency risk increases sharply after 2–4 weeks","Explore non-benzo alternatives for anxiety: SSRIs, CBT therapy, buspirone","Never combine with alcohol, opioids, or other CNS depressants — frequently a fatal combination","Work with your doctor on a gradual tapering plan — abrupt cessation is dangerous"],
+   facts:{Class:"Benzodiazepine / CNS Depressant",Legal:"Prescription only (Schedule IV)",Origin:"Synthetic","Addiction Potential":"High","Lethal Dose":"Low alone / extreme with opioids","Withdrawal":"Potentially fatal — must taper slowly"}},
+
+  {id:9,name:"LSD",also:"Acid, Tabs, Blotter, Microdots, Lucy",type:"hallucinogen",danger:"moderate",emoji:"◉",img:"https://upload.wikimedia.org/wikipedia/commons/a/ab/LSD_blotter.jpg",
+   tags:["Hallucinogen / Psychedelic","Oral (blotter tabs)","Negligible Physical Dependency","Psychosis Risk"],
+   short:"A potent psychedelic causing profound perceptual changes. Not physically addictive, but carries serious psychological risks for vulnerable users.",
+   warning:"LSD can trigger long-lasting psychosis in individuals with underlying mental health vulnerabilities. A 'bad trip' can cause lasting psychological trauma.",
+   what:"LSD is a semi-synthetic psychedelic derived from ergot fungus. Active in microgram quantities, it causes 8–12 hour hallucinations by acting on serotonin receptors. Virtually no physical addiction potential, but significant psychological risks in vulnerable individuals.",
+   harms:["Induces acute psychosis in people with genetic vulnerability to schizophrenia","Triggers HPPD (Hallucinogen Persisting Perception Disorder) — re-experiencing visuals weeks later","Severe psychological trauma from bad trips — lasting dissociation and derealization","Impairs judgement — accidents and risky behaviour are common during experiences","Worsens underlying anxiety, PTSD, and depression in vulnerable users","Can trigger suicidal ideation or psychotic breaks in predisposed individuals"],
+   addiction:"LSD does not cause physical dependency. Tolerance builds and dissipates within days. However, psychological dependency and compulsive use can develop, and the psychological risks are real and significant.",
+   prevention:["If you have personal or family history of psychosis or schizophrenia, do not use LSD","Never use alone — 'trip sitters' (sober, trusted companions) significantly reduce harm","Avoid use during periods of depression, anxiety, or PTSD — these are dramatically worsened","If experiencing psychological distress, calm reassurance and a safe environment are key","Seek psychiatric evaluation if you experience persistent perceptual disturbances after use"],
+   facts:{Class:"Serotonergic Psychedelic",Legal:"Class A / Schedule I",Origin:"Ergot fungus (semi-synthetic)","Addiction Potential":"Very Low","Lethal Dose":"Extremely high (no known human lethal dose)","Withdrawal":"Negligible physical"}},
+
+  {id:10,name:"Ketamine",also:"Special K, Ket, Vitamin K, K-hole, Horse Tranquiliser",type:"hallucinogen",danger:"high",emoji:"⬖",img:"https://alphabiolabsusa.com/wp-content/uploads/2024/07/featured-ketamine-drug-testing.jpg",
+   tags:["Dissociative Anesthetic","Injected/Snorted","Bladder Destruction","Class B"],
+   short:"A medical anaesthetic abused recreationally, causing dissociation and severe, often irreversible bladder destruction with regular use.",
+   warning:"Ketamine-induced uropathy is permanent and progressive. Many young regular users require bladder removal surgery before age 30.",
+   what:"Ketamine is a dissociative anaesthetic used in surgery. Recreationally it causes out-of-body 'k-hole' experiences. Its prevalence in nightlife and club culture has caused a significant rise in young people with ketamine-destroyed bladders.",
+   harms:["Destroys the bladder lining — ketamine cystitis causes excruciating chronic pain and incontinence","Bladder damage is irreversible and requires surgery in severe cases — many patients need bladder removal","Severe dissociative psychosis with heavy or long-term use","Memory impairment and cognitive difficulties persist months after stopping","High doses cause complete unconsciousness and respiratory depression","Liver toxicity with chronic use — elevated liver enzymes and hepatomegaly"],
+   addiction:"Ketamine is psychologically highly addictive. Regular use rapidly escalates as tolerance builds. The dissociative 'escape' effect creates powerful psychological dependency that is difficult to break without specialist support.",
+   prevention:["There is no safe level of recreational ketamine use — bladder damage begins early","Urinary symptoms after ketamine use require immediate medical attention — damage is progressive","Psychological support and CBT are effective for ketamine dependency","Do not combine with alcohol or CNS depressants — risk of respiratory depression","If prescribed ketamine for depression treatment, follow strict medical protocols rigorously"],
+   facts:{Class:"Dissociative Anesthetic",Legal:"Class B (UK) / Schedule III (US)",Origin:"Synthetic","Addiction Potential":"Moderate-High","Lethal Dose":"High alone","Withdrawal":"Psychological — anxiety, depression"}},
+
+  {id:11,name:"Synthetic Cannabinoids",also:"Spice, K2, Mamba, Black Mamba, Fake Weed",type:"cannabis",danger:"critical",emoji:"⬢",img:"https://static.independent.co.uk/s3fs-public/thumbnails/image/2019/07/14/11/cannabis-joint.jpg?width=1200&height=1200&fit=crop",
+   tags:["Synthetic Cannabinoid","Smoked/Vaped","Unpredictable Batches","Class B/A"],
+   short:"Man-made chemicals falsely marketed as 'legal cannabis' — far more dangerous and unpredictable. A single use has caused permanent psychosis and death.",
+   warning:"Synthetic cannabinoids can be 100× more potent than THC. Their effects are completely unpredictable — overdose risk exists with every single use.",
+   what:"Synthetic cannabinoids are lab-made chemicals designed to mimic THC but binding receptors with far greater and more unpredictable potency. Sold as 'Spice' or 'K2', they are especially prevalent among homeless populations and in prisons due to their low cost.",
+   harms:["Far more toxic than natural cannabis — unpredictable batches cause mass community overdoses","Causes violent psychosis, seizures, kidney failure, and cardiac arrest — sometimes on first use","Associated with extreme and uncontrollable violent behaviour","Highly variable potency between batches — overdose risk is unpredictable with every use","Severe and prolonged withdrawal including psychosis lasting weeks","Rapid development of intense physical and psychological dependency"],
+   addiction:"Synthetic cannabinoids create intense physical and psychological dependency far more rapidly than natural cannabis. Withdrawal includes severe anxiety, psychosis, and suicidal ideation requiring medical supervision.",
+   prevention:["Do not be misled by 'herbal' or 'legal' labelling — these substances are not safe","No dose of synthetic cannabinoids is predictable — there is no safe amount","Call emergency services immediately for any suspected Spice/K2 overdose","Treatment requires specialist dual-diagnosis support addressing both psychosis and addiction","Public health campaigns targeting vulnerable populations (homeless, prisoners) are critical"],
+   facts:{Class:"Synthetic Cannabinoid",Legal:"Class B/A (UK varies) / Schedule I (US)",Origin:"Synthetic chemical compounds","Addiction Potential":"Extreme","Lethal Dose":"Unpredictable — varies by batch","Withdrawal":"Severe — psychosis risk"}},
+
+  {id:12,name:"Prescription Opioids",also:"OxyContin, Tramadol, Codeine, Morphine, Vicodin, Hydrocodone",type:"opioid",danger:"high",emoji:"⬭",img:"https://www.briarwooddetox.com/wp-content/uploads/2019/05/strongest-opioids-1.jpg",
+   tags:["Opioid","Prescription","Gateway to Heroin","Widely Misused"],
+   short:"Legal painkillers that fuelled a global overdose epidemic. 80% of heroin users in the US report prescription opioids as their gateway drug.",
+   warning:"Prescription opioid misuse is the primary pathway to heroin addiction. Overprescription has killed hundreds of thousands globally.",
+   what:"Prescription opioids include oxycodone, hydrocodone, tramadol, and codeine. They are medically essential for severe pain but carry high addiction potential. Aggressive marketing by pharmaceutical companies drove the US opioid crisis, the deadliest drug crisis in history.",
+   harms:["Physical dependency develops rapidly — often within 2–4 weeks of regular use","Severe constipation, nausea, hormonal disruption, and immune suppression","Fatal respiratory depression — especially when combined with alcohol or benzodiazepines","Overdose risk increases dramatically when combined with other CNS depressants","Withdrawal drives users to seek cheaper street alternatives like heroin and fentanyl","Gateway effect: 80% of US heroin users started with prescription opioids"],
+   addiction:"Opioid use disorder from prescription drugs follows the identical neurological pathway as heroin addiction. Tolerance builds rapidly, frequently leading users to escalate doses or transition to cheaper and more dangerous street opioids.",
+   prevention:["Only take prescribed doses — never increase without doctor consultation","Store prescription opioids securely — prevent access by family members, especially adolescents","Explore non-opioid pain management alternatives wherever clinically possible","Use pharmacy take-back programmes to safely dispose of unused prescription opioids","Know the signs of dependency and seek Medication-Assisted Treatment early — before escalation"],
+   facts:{Class:"Opioid",Legal:"Prescription only (Schedule II/III)",Origin:"Semi-synthetic or synthetic","Addiction Potential":"High","Lethal Dose":"Low-Moderate (+ CNS depressants = high)","Withdrawal":"Severe — onset 12–48 hrs"}},
+
+  {id:13,name:"GHB / GBL",also:"G, Liquid Ecstasy, Gina, Coma in a Bottle, Fantasy",type:"depressant",danger:"critical",emoji:"◬",img:"https://www.recoveryranchpa.com/wp-content/uploads/2022/12/What-Is-GHB-2.png",
+   tags:["CNS Depressant","Liquid/Powder","Drug-Facilitated Assault","Extremely Narrow Safe Dose"],
+   short:"A depressant with an extremely thin margin between intoxication and death. Colourless and near-tasteless, notorious for use in drug-facilitated sexual assault.",
+   warning:"The difference between a euphoric and a lethal dose of GHB is fractions of a millilitre. GHB is frequently used to spike drinks for sexual assault.",
+   what:"GHB and its prodrug GBL are depressants producing euphoria at low doses and immediate coma at slightly higher doses. They are colourless, nearly odourless liquids making them impossible to detect in drinks. Withdrawal from regular use is among the most medically dangerous of any substance.",
+   harms:["Extremely narrow therapeutic window — tiny excess causes immediate unconsciousness or coma","Respiratory depression and death with modest overdose or combination with alcohol","Complete rapid loss of consciousness — primary date rape drug","Severe physical dependency with regular use — more intense than most substances","Withdrawal causes life-threatening seizures and delirium — can last weeks, often requires ICU","Liver and kidney damage with chronic use"],
+   addiction:"GHB/GBL dependency develops rapidly with daily use. Withdrawal is among the most medically dangerous of all substances — more severe and prolonged than alcohol withdrawal. ICU-level care is sometimes required during detox.",
+   prevention:["Never accept drinks from strangers at social events — GHB is colourless and nearly tasteless","Never combine GHB with alcohol — dramatically amplified and unpredictable depressant effects","Seek emergency care immediately for any suspected GHB/GBL overdose — do not wait","Detox requires medical supervision in a hospital or specialist clinic setting","Use drug testing kits at social events — some kits detect GHB in drinks"],
+   facts:{Class:"CNS Depressant / GHB",Legal:"Class C (UK) / Schedule I (US)",Origin:"Synthetic","Addiction Potential":"High","Lethal Dose":"Very low — extremely narrow safety margin","Withdrawal":"Life-threatening — ICU often required"}},
+
+  {id:14,name:"Inhalants",also:"Glue, Butane, Aerosols, Nitrous Oxide, Poppers, Solvents",type:"depressant",danger:"high",emoji:"⬙",img:"https://www.campusdrugprevention.gov/sites/default/files/styles/content/public/inhalants_GSAD.jpg?h=c4842d71&itok=nYqhPLpK",
+   tags:["Volatile Solvents/Gases","Inhaled","Sudden Sniffing Death","Legal / Accessible"],
+   short:"Household chemicals that produce intoxication when inhaled. Disproportionately used by children and capable of causing instant cardiac death on first use.",
+   warning:"Sudden Sniffing Death Syndrome can kill a first-time inhalant user. The heart goes into fatal arrhythmia without any warning — often triggered by physical exertion.",
+   what:"Inhalants encompass volatile solvents, aerosols, gases, and nitrites found in household products. They are uniquely dangerous because most are legal, cheap, and easily accessible — making them the most common substances abused by children as young as 7–12 years old.",
+   harms:["Sudden Sniffing Death Syndrome — fatal cardiac arrhythmia can occur at any time, with no warning","Severe brain damage from oxygen deprivation — can be irreversible after a single incident","Causes progressive dementia-like cognitive and motor impairment in chronic users","Liver and kidney damage from solvent accumulation in fatty tissues","Hearing and vision loss from nerve damage in regular users","Asphyxiation risk from displacing oxygen when inhaling gases in enclosed spaces"],
+   addiction:"Inhalants create rapid tolerance and psychological dependency. Long-term users are often severely cognitively impaired. The accessibility among young people makes early prevention education uniquely critical.",
+   prevention:["Educate children about inhalant dangers from primary school age — prevention must start early","Secure household chemicals, aerosols, and solvents from unsupervised access by young people","Know the signs: chemical odours, paint stains on face or clothing, hidden rags, disorientation","Emergency: fresh air, CPR if needed — do NOT give adrenaline (triggers fatal arrhythmia)","Addiction treatment requires specialist youth services and neurological assessment"],
+   facts:{Class:"Various (solvents/gases/nitrites)",Legal:"Mostly legal (household products)",Origin:"Industrial/household chemicals","Addiction Potential":"Moderate-High","Lethal Dose":"Variable — can occur on first use","Withdrawal":"Moderate (substance-dependent)"}},
+
+  {id:15,name:"Tobacco / Nicotine",also:"Cigarettes, Vaping, E-Cigarettes, Shisha, Chewing Tobacco",type:"stimulant",danger:"high",emoji:"◎",img:"https://upload.wikimedia.org/wikipedia/commons/b/b8/Cigarette_smoking.jpg",
+   tags:["Stimulant","Legal / Age-Restricted","#1 Preventable Death Cause","Extremely Addictive"],
+   short:"The leading cause of preventable death globally. Nicotine is among the most addictive substances known — tobacco kills more than all illegal drugs combined.",
+   warning:"Tobacco kills half of all long-term users. 8 million people die from tobacco use each year — more than all illegal drug deaths combined.",
+   what:"Nicotine stimulates nicotinic acetylcholine receptors in the brain. While nicotine drives addiction, tobacco smoke contains over 70 known carcinogens. Vaping delivers nicotine with fewer toxins but carries its own risks, particularly for young people whose brains are still developing.",
+   harms:["Responsible for 85% of all lung cancer cases globally","Causes COPD — progressive, irreversible lung destruction affecting breathing for life","Major risk factor for cardiovascular disease, heart attack, and stroke","Linked to cancers of the mouth, throat, oesophagus, bladder, kidney, and cervix","Vaping causes 'popcorn lung' (bronchiolitis obliterans) and inflammatory lung conditions","Secondhand smoke kills non-smokers — especially children in same household"],
+   addiction:"Nicotine is among the most addictive substances known — some research suggests it forms dependency faster than heroin. Withdrawal causes severe irritability, intense cravings, concentration problems, and weight gain.",
+   prevention:["Use Nicotine Replacement Therapy (patches, gum, lozenges) to manage withdrawal cravings","Varenicline (Champix/Chantix) doubles quit success rates compared to willpower alone","Combination NRT + behavioural support produces the strongest sustained cessation outcomes","Avoid 'switching' to vaping as a permanent solution — nicotine dependency transfers directly","Protect children from secondhand smoke and from normalising tobacco and vaping use"],
+   facts:{Class:"Stimulant (nicotinic agonist)",Legal:"Legal (age-restricted)",Origin:"Tobacco plant","Addiction Potential":"Extreme","Lethal Dose":"Chronic use — kills 50% of long-term users","Withdrawal":"Severe cravings, irritability, anxiety, weight gain"}},
+
+  {id:16,name:"Psilocybin (Magic Mushrooms)",also:"Shrooms, Mushies, Caps, Golden Teachers, Liberty Caps",type:"hallucinogen",danger:"moderate",emoji:"🍄",img:"https://coloradonewsline.com/wp-content/uploads/2022/07/GettyImages-1329754847-1536x889.jpg",
+   tags:["Psychedelic","Oral","Low Physical Dependency","Psychosis Risk"],
+   short:"A naturally-occurring psychedelic producing intense visual and emotional experiences. Lower toxicity than many drugs but carries significant psychological risks.",
+   warning:"Psilocybin can trigger lasting psychosis or psychotic episodes in genetically vulnerable individuals. Dose accuracy is impossible with dried mushrooms — overdose is common.",
+   what:"Psilocybin is a naturally occurring compound in several fungi species. It is converted to psilocin in the body, which acts on serotonin receptors to produce 4–6 hour hallucinations and emotional intensification. Research into therapeutic use is ongoing, but recreational use carries real risks.",
+   harms:["Difficult to dose accurately — dried mushrooms vary enormously in potency between batches","Can trigger severe anxiety, panic attacks, and acute psychotic episodes ('bad trips')","HPPD (Hallucinogen Persisting Perception Disorder) — recurring flashbacks without taking the drug","Risk of accidents from severely impaired perception and judgement during use","Can worsen depression, anxiety, and PTSD in vulnerable individuals despite therapeutic potential","Foraged mushrooms risk confusion with toxic species — accidental poisoning deaths occur"],
+   addiction:"Psilocybin shows low addiction potential. Tolerance builds rapidly over days but dissipates quickly. Physical dependency has not been demonstrated. However, psychological dependency and escapism patterns can develop in chronic users.",
+   prevention:["Those with personal or family history of psychotic disorders should never use psilocybin","Foraged mushrooms risk dangerous confusion with toxic species — never forage without expertise","Never use alone — sober supervision significantly reduces harm from psychological distress","Set and setting are critical: comfortable environment and stable mindset reduce bad trip risk","If seeking therapeutic use, access only through approved clinical trials or supervised settings"],
+   facts:{Class:"Serotonergic Psychedelic",Legal:"Class A / Schedule I (most jurisdictions)",Origin:"Psilocybe fungus (natural)","Addiction Potential":"Very Low","Lethal Dose":"Extremely high (indirect danger from behaviour)","Withdrawal":"Minimal physical"}},
+
+  {id:17,name:"Bath Salts (Cathinones)",also:"MDPV, Mephedrone, Flakka, Alpha-PVP, Plant Food",type:"stimulant",danger:"critical",emoji:"⚡",img:"https://www.dea.gov/sites/default/files/2018-06/bath-salts04.jpg",
+   tags:["Synthetic Cathinone","Snorted/Injected","Extreme Psychosis","Class B/A"],
+   short:"Synthetic stimulants causing superhuman strength, extreme violence, and paranoid psychosis. Associated with highly publicised incidents of erratic and deadly behaviour.",
+   warning:"Bath salts can cause users to enter a state of uncontrolled violent psychosis, self-mutilation, and superhuman-strength aggression. Effects are highly unpredictable.",
+   what:"Synthetic cathinones ('bath salts') mimic the effects of cocaine and MDMA but with far greater neurotoxicity and psychosis risk. Sold as 'plant food' or 'bath salts' to evade drug laws. Flakka (alpha-PVP) achieved notoriety for causing extreme violent incidents in Florida.",
+   harms:["Extreme paranoid psychosis — users have performed self-mutilation and extreme violence","Hyperthermia (dangerous overheating) causing organ failure and death","Severe cardiovascular stress — cardiac arrest risk even in young healthy users","Causes 'excited delirium' — a medical emergency with high mortality","Neurotoxic damage to dopamine and serotonin systems similar to methamphetamine","Highly unpredictable effects — no two doses have the same effect"],
+   addiction:"Synthetic cathinones create rapid, intense addiction. The extreme crash drives compulsive re-dosing. Withdrawal involves severe depression, paranoia, and suicidal ideation. Treatment requires specialist inpatient psychiatric care.",
+   prevention:["Bath salts are never safe — 'legal high' labelling is deceptive and meaningless","If you encounter someone in bath salt psychosis, call emergency services — do not attempt restraint","Treatment centres need advance warning — bath salt psychosis requires specialist psychiatric containment","Public education must target young people in areas where bath salts are prevalent","Advocate for laws that keep pace with constantly reformulated novel psychoactive substances"],
+   facts:{Class:"Synthetic Cathinone / Stimulant",Legal:"Class B/A (UK) / Schedule I (US)",Origin:"Synthetic","Addiction Potential":"Extreme","Lethal Dose":"Moderate — hyperthermia risk","Withdrawal":"Severe — psychiatric care required"}},
+
+  {id:18,name:"Tramadol",also:"Ultram, Tramal, Zydol, Tram",type:"opioid",danger:"high",emoji:"💊",img:"https://cdn.rehabfiles.com/sites/sanctuarylodge/wp-content/uploads/2024/04/sanctuary-tramadol-addiction.svg",
+   tags:["Synthetic Opioid","Oral/Injected","Widespread Prescription Abuse","Seizure Risk"],
+   short:"Often perceived as a weak, safe opioid — tramadol is widely misused and carries real addiction risk plus a unique danger of seizures in overdose.",
+   warning:"Tramadol is the most widely trafficked opioid in Africa and the Middle East. It lowers seizure threshold — overdose can cause fatal seizures, especially in adolescents.",
+   what:"Tramadol is a synthetic opioid also acting on serotonin and norepinephrine pathways. It is widely prescribed but frequently obtained illegally. Its perception as a 'safe' opioid drives widespread misuse — particularly among students in parts of Africa who use it to work longer hours.",
+   harms:["Lowers seizure threshold — even therapeutic doses can cause seizures in susceptible individuals","Physical and psychological dependency develops with regular use","Serotonin syndrome risk when combined with antidepressants, MAOIs, or other serotonergic drugs","Nausea, vomiting, severe dizziness, and respiratory depression in overdose","Gateway to stronger opioids — tramadol tolerance drives escalation to heroin and fentanyl","Dangerous drug interactions with many commonly prescribed medications"],
+   addiction:"Tramadol dependency mirrors other opioid use disorders. Withdrawal includes flu-like symptoms, severe anxiety, and unusual psychiatric symptoms including psychosis — unlike typical opioid withdrawal, reflecting its serotonergic action.",
+   prevention:["Understand that tramadol is a real opioid — 'mild' labelling is misleading","Never take more than prescribed and never combine with antidepressants without doctor guidance","Dispose of unused tramadol through take-back programmes to prevent diversion","If using for legitimate pain, discuss non-opioid alternatives with your doctor after short-term use","Recognise that tolerance is forming if you need increasing amounts for the same pain relief"],
+   facts:{Class:"Synthetic Opioid / Serotonergic",Legal:"Prescription only (Schedule IV US)",Origin:"Synthetic","Addiction Potential":"Moderate-High","Lethal Dose":"Moderate (seizure risk)","Withdrawal":"Opioid + atypical psychiatric symptoms"}},
+
+  {id:19,name:"Amphetamine (Speed)",also:"Speed, Whizz, Billy, Base, Paste",type:"stimulant",danger:"high",emoji:"⚗️",img:"https://i.dailymail.co.uk/1s/2022/02/14/11/54172409-10510589-A_study_of_more_than_250_000_people_in_Taiwan_found_amphetamines-a-3_1644836999329.jpg",
+   tags:["Stimulant","Snorted/Swallowed/Injected","Class B","Cardiovascular Risk"],
+   short:"A stimulant chemically related to methamphetamine. Widely used recreationally and prescribed (as Adderall). Carries significant cardiovascular and psychological risks.",
+   warning:"Amphetamines dramatically raise blood pressure and heart rate. Recreational doses far exceed therapeutic levels — cardiac complications occur even in young, healthy users.",
+   what:"Amphetamine includes both the street drug 'speed' and prescription medications like Adderall and Dexedrine. At low therapeutic doses it improves focus; at recreational doses it causes euphoria, extreme energy, and significant physical and psychological harm. Chemically it is the same compound as methamphetamine, just less potent.",
+   harms:["Cardiovascular strain — elevated heart rate, blood pressure, and risk of cardiac arrhythmia","Severe insomnia and crash cycles causing exhaustion and depression","Psychosis with chronic use — paranoia, hallucinations, and anxiety","Nutritional deficiency from appetite suppression during binges","Neurotoxic damage to dopamine pathways with heavy long-term use","Risk of stroke especially in people with undiagnosed cardiovascular conditions"],
+   addiction:"Amphetamine creates significant psychological and moderate physical dependency. The binge-crash cycle is a hallmark of stimulant addiction. Tolerance builds rapidly. Prescription stimulant misuse is a growing public health concern, particularly among students.",
+   prevention:["Avoid escalating doses — stimulant tolerance builds rapidly and doses escalate dangerously","Ensure regular sleep, food, and hydration during use — neglect amplifies all harms","Prescription stimulants must be used only as directed — misuse starts the addiction pathway","If prescribed for ADHD, discuss the lowest effective dose and take regular drug holidays","Stimulant addiction responds well to CBT and contingency management approaches"],
+   facts:{Class:"Stimulant (phenethylamine)",Legal:"Class B (UK) / Schedule II (US)",Origin:"Synthetic","Addiction Potential":"High","Lethal Dose":"Moderate","Withdrawal":"Fatigue, depression, hypersomnia"}},
+
+  {id:20,name:"PCP (Angel Dust)",also:"Angel Dust, Peace Pill, Rocket Fuel, Ozone, Sherm",type:"hallucinogen",danger:"critical",emoji:"☁️",img:"https://img.lb.wbmdstatic.com/vim/live/webmd/consumer_assets/site_images/article_thumbnails/other/what-is-pcp-bigbead/1800x1200-what-is-pcp-bigbead.jpg",
+   tags:["Dissociative","Smoked/Snorted/Injected","Violent Psychosis","Class A"],
+   short:"A dissociative drug causing extreme violent psychosis, numbness to pain, and complete detachment from reality. Associated with severe violent incidents and self-harm.",
+   warning:"PCP causes complete dissociation from reality and pain — users have sustained injuries they cannot feel, or committed violence while believing they are in a completely different reality.",
+   what:"PCP (phencyclidine) is a powerful dissociative anaesthetic abandoned for medical use due to severe psychological effects. It causes a profound, unpredictable dissociative state lasting 4–8 hours. Users often enter states of extreme agitation and violence while entirely detached from reality.",
+   harms:["Extreme violent psychosis — users have no awareness of or pain from severe injuries","Causes complete dissociation from reality for hours — any type of accident or harm can occur","Fatal seizures, hyperthermia, and respiratory depression in overdose","Schizophrenia-like psychosis can persist for weeks after a single dose","Long-term cognitive impairment including memory loss and concentration problems","Flash-backs (re-experiencing effects) can occur months after last use"],
+   addiction:"PCP creates significant psychological dependency through its powerful dissociative effects. Tolerance and cravings develop rapidly. The psychosis component makes treatment uniquely challenging — antipsychotic medication is typically required alongside addiction treatment.",
+   prevention:["PCP is extremely dangerous — even a single use can cause lasting psychotic disorder","Emergency treatment for PCP psychosis requires specialist psychiatric containment","Do not attempt to restrain someone in PCP psychosis — risk of injury is extreme","Long-term treatment requires dual diagnosis care: addiction + ongoing psychosis management","Naloxone will not reverse PCP overdose — emergency services must always be contacted"],
+   facts:{Class:"Dissociative Anesthetic (NMDA antagonist)",Legal:"Class A (UK) / Schedule II (US)",Origin:"Synthetic","Addiction Potential":"Moderate-High","Lethal Dose":"Moderate (psychosis-driven harm)","Withdrawal":"Psychological — anxiety, depression, psychosis"}},
+
+  {id:21,name:"Crack Cocaine",also:"Crack, Rock, Freebase, Base, Stone",type:"stimulant",danger:"critical",emoji:"🪨",img:"https://ichef.bbci.co.uk/ace/standard/3840/cpsprodpb/89f7/live/69e3d310-92e1-11ef-9e9f-f94aa162b9ae.jpg",
+   tags:["Stimulant","Smoked","Extreme Addiction Speed","Pulmonary Risk"],
+   short:"The freebase form of cocaine. Smoked for an intense but brief 5–10 minute high. Addiction can form after just one or two uses — faster than almost any other substance.",
+   warning:"Crack cocaine is one of the fastest-forming addictions known. The brief but overwhelming high creates an intense, immediate compulsion to use again that can dominate all decision-making within days.",
+   what:"Crack cocaine is cocaine processed into a freebase form that can be smoked, delivering a massive and extremely rapid pulse of dopamine. The high lasts only 5–10 minutes but is described as far more intense than powder cocaine. This brief duration drives compulsive re-dosing and rapid addiction formation.",
+   harms:["Addiction can form after 1–2 uses — among the fastest addiction-forming substances known","Severe lung damage: 'crack lung' — haemorrhage, pneumonia, and respiratory failure","Extreme cardiovascular stress — cardiac arrest risk is very high during smoking","Rapid and severe psychological deterioration including paranoia and violent behaviour","Complete lifestyle collapse — housing, relationships, and employment are rapidly lost","Extremely high overdose risk from compulsive re-dosing to extend the brief high"],
+   addiction:"Crack cocaine addiction is among the most severe of any substance. The compulsion to re-dose during and after the brief high drives instant dependency. The profound crash after the high includes severe depression and suicidal ideation, driving further use to escape it.",
+   prevention:["Even trying crack once carries extreme risk — addiction from first use is documented","Cognitive Behavioural Therapy combined with contingency management has evidence for crack addiction","Community support and stable housing are critical factors in crack addiction recovery","Naloxone does not reverse crack overdose — call emergency services for chest pain or collapse","Crack use is disproportionately concentrated in areas of deprivation — systemic poverty is a root cause"],
+   facts:{Class:"Stimulant (Freebase Cocaine)",Legal:"Class A / Schedule II",Origin:"Coca leaf (processed)","Addiction Potential":"Extreme","Lethal Dose":"Moderate-High","Withdrawal":"Severe psychological crash"}},
+
+  {id:22,name:"Heroin + Fentanyl Mix",also:"Grey Death, Fentaheroin, Laced Heroin",type:"opioid",danger:"critical",emoji:"☠️",img:"https://npr.brightspotcdn.com/legacy/uploads/2018/8/30/shutterstock_1031234188.jpg",
+   tags:["Mixed Opioid","Injected/Snorted","Instantly Lethal","Undetectable to User"],
+   short:"Street heroin is now routinely laced with fentanyl without the user's knowledge. This combination has made every use of illicit heroin a potential death sentence.",
+   warning:"You cannot see, smell, or taste fentanyl in heroin. A single dose of fentanyl-laced heroin can kill experienced users before they can exhale. Naloxone must always be present.",
+   what:"Dealers mix fentanyl into heroin to increase potency cheaply. The fentanyl is rarely distributed evenly — hotspots in a single batch can be hundreds of times more potent than the surrounding drug. 'Grey Death' is an extreme mixture of heroin, fentanyl, carfentanil, and U-47700 reported in the US.",
+   harms:["Instant respiratory arrest — the margin between a dose and a lethal dose is invisible","No way to detect fentanyl without a test strip — every use is a game of Russian roulette","Even experienced users with high tolerance die from fentanyl hotspots in laced batches","Carfentanil variants are 10,000× morphine potency — safe doses are physically unmeasurable","Naloxone may require 3–4 doses to reverse — single-dose kits are frequently insufficient","Survivors of fentanyl overdose face permanent brain damage from hypoxia"],
+   addiction:"Every aspect of opioid addiction applies, compounded by the inability to know the actual drug being taken. This unpredictability makes tolerance calculations impossible and renders any 'controlled' use an illusion.",
+   prevention:["Always use fentanyl test strips on any batch of street heroin before use","Never use alone — a supervising person with naloxone can save your life in under 2 minutes","Carry at least 2 doses of naloxone — fentanyl frequently requires multiple administrations","Supervised consumption sites (where available) prevent deaths from laced drug use","Medication-Assisted Treatment (buprenorphine/methadone) eliminates the fentanyl risk entirely"],
+   facts:{Class:"Mixed Opioid (Heroin + Fentanyl)",Legal:"Class A / Schedule I",Origin:"Heroin + illicitly manufactured fentanyl","Addiction Potential":"Extreme","Lethal Dose":"Infinitesimally small","Withdrawal":"Severe — requires MAT"}},
+
+  {id:23,name:"Nitrous Oxide",also:"Laughing Gas, Nos, Balloons, Whippets, Hippie Crack",type:"depressant",danger:"moderate",emoji:"🎈",img:"https://live-production.wcms.abc-cdn.net.au/79592081ccad2e1c3028c064e76ad21b?impolicy=wcms_crop_resize&cropH=1209&cropW=2150&xPos=0&yPos=112&width=862&height=485",
+   tags:["Dissociative Gas","Inhaled (balloons)","Vitamin B12 Depletion","Legal in Many Areas"],
+   short:"A commonly misused anaesthetic gas producing brief euphoria. Now one of the most widely used recreational drugs globally — and one of the most underestimated for long-term neurological harm.",
+   warning:"Chronic nitrous oxide use destroys vitamin B12, causing subacute combined degeneration of the spinal cord — a permanent and disabling neurological condition. Cases in young people are rapidly rising.",
+   what:"Nitrous oxide is a medical anaesthetic widely misused recreationally. Inhaled from balloons, it produces a 30–60 second rush of euphoria and dissociation. It has recently become one of the most commonly used recreational drugs in Europe and Australia, with neurological harm now a major clinical concern.",
+   harms:["Destroys vitamin B12 — causing irreversible spinal cord damage (SACD) with regular use","SACD causes permanent weakness, numbness, difficulty walking, and bladder dysfunction","Sudden death risk from oxygen deprivation — especially when used in enclosed spaces or bags","Frostbite to lips, throat, and lungs from inhaling directly from pressurised canisters","Canisters and balloons are a serious litter problem — an estimated 100,000 discarded in UK annually","Dizziness and falls cause serious injuries — especially when standing while inhaling"],
+   addiction:"Nitrous oxide compulsive use develops due to its brief, immediately-repeatable high. While not physically addictive in the traditional sense, binge use patterns are common and neurological damage accumulates with each use session.",
+   prevention:["Understand that neurological damage accumulates silently — symptoms appear after significant damage has occurred","Ensure adequate B12 supplementation if you have ever used nitrous oxide frequently","Never inhale directly from a canister — fatal lung freezing and pressure damage risk","Never use in a vehicle, bag, or any enclosed space — oxygen deprivation deaths occur","Seek neurological evaluation if you experience any tingling, weakness, or walking difficulty after use"],
+   facts:{Class:"Dissociative / CNS Depressant",Legal:"Legal for food use (widely misused)",Origin:"Medical/industrial gas","Addiction Potential":"Low-Moderate","Lethal Dose":"Moderate (oxygen displacement)","Withdrawal":"Minimal physical"}},
+
+  {id:24,name:"Cocaine + Alcohol (Cocaethylene)",also:"Liquid Courage Combo, Disco Biscuit mix",type:"stimulant",danger:"critical",emoji:"⚗",img:"https://www.thetimes.com/imageserver/image/%2Fmethode%2Ftimes%2Fprod%2Fweb%2Fbin%2F52a693ec-8ed0-11e9-afbe-8bab2c71e5a4.jpg?crop=2222%2C1250%2C0%2C116&resize=1200",
+   tags:["Combined Drug Use","Creates Toxic Metabolite","Fatal Cardiac Risk","Very Common Combination"],
+   short:"When cocaine and alcohol are combined, the liver creates a third, more toxic substance — cocaethylene. This combination is up to 25× more cardiotoxic than cocaine alone.",
+   warning:"Cocaethylene is retained in the heart, liver, and brain far longer than cocaine. The combination dramatically increases sudden cardiac death risk and is one of the most dangerous commonly used drug combinations.",
+   what:"The combination of cocaine and alcohol produces cocaethylene, a unique metabolite formed only when both substances are present simultaneously. Cocaethylene is a CNS stimulant with its own toxic effects — retained in cardiac tissue up to 5× longer than cocaine. This is one of the most common and dangerous drug combinations globally.",
+   harms:["Creates cocaethylene — a unique, more toxic compound retained in heart muscle","Up to 25× greater cardiotoxic effect than cocaine alone — cardiac arrest risk multiplies","Extends the subjective 'high' — creating false safety perception that drives more combined use","Liver damage far exceeding either substance alone — both liver enzymes and tissue damage","Higher risk of violent and aggressive behaviour than either substance separately","Sudden death can occur days after the last use due to slow elimination of cocaethylene"],
+   addiction:"This combination creates particularly powerful psychological dependency because the combination produces a subjectively better experience than either substance alone, while masking the dangerous physical signals of overuse.",
+   prevention:["Understanding cocaethylene exists should fundamentally change how this combination is perceived — it is not two drugs: it is three","Never combine cocaine and alcohol — the cardiac risk is not linear but exponential","Cocaine use should never occur when alcohol has been consumed at any level","Emergency services must be contacted for any chest pain following cocaine + alcohol use","CBT addressing both cocaine and alcohol simultaneously is required for recovery"],
+   facts:{Class:"Mixed Stimulant/Depressant + Cocaethylene",Legal:"Class A + Legal",Origin:"Combined — produces novel toxic metabolite","Addiction Potential":"Extreme","Lethal Dose":"Moderate (cardiac)","Withdrawal":"Combined opioid + alcohol symptoms"}},
+
+  {id:25,name:"Anabolic Steroids",also:"Juice, Roids, Gear, Sauce, Test, Deca",type:"stimulant",danger:"moderate",emoji:"💪",img:"https://roots-recovery.com/wp-content/uploads/2021/02/Anabolic-Steriod.jpg",
+   tags:["Androgenic Steroids","Injected/Oral","Cardiovascular Risk","Hormonal Disruption"],
+   short:"Synthetic hormones used to build muscle. Causes serious cardiovascular damage, hormonal disruption, and significant psychological effects including aggression and depression.",
+   warning:"Anabolic steroid abuse permanently disrupts the body's own hormone production. Heart attacks occur in young steroid users — the heart becomes pathologically enlarged and arteries harden prematurely.",
+   what:"Anabolic-androgenic steroids (AAS) are synthetic derivatives of testosterone. Used medically for hormone deficiency but widely abused in sport and bodybuilding. While physical dependency is debated, the hormonal, cardiovascular, and psychological effects are well documented and serious.",
+   harms:["Cardiomegaly — the heart enlarges abnormally and can fail suddenly — young users die from this","Premature atherosclerosis — arteries harden decades ahead of time, causing early heart attacks","Permanently suppresses natural testosterone production — may require lifelong hormone replacement","'Roid rage' — episodes of extreme, uncontrolled aggression documented in clinical literature","Liver tumours and peliosis hepatis (blood-filled liver cysts) with oral steroid use","In adolescents: permanent stunting of growth by premature bone plate closure"],
+   addiction:"Anabolic steroid dependency is primarily psychological — driven by body image distortion (muscle dysmorphia). Physical dependency involves hormonal changes: withdrawal causes severe hypogonadism (very low testosterone), depression, fatigue, and reduced sex drive that can last months to years.",
+   prevention:["There is no safe dose or cycle of anabolic steroids for non-medical use","Hormonal panel testing before, during, and after any cycle is essential to monitor damage","Beware of online suppliers — most illicit steroids are contaminated or incorrectly dosed","Post Cycle Therapy (PCT) helps hormonal recovery but does not eliminate cardiovascular damage","Seek psychological support for body image concerns — muscle dysmorphia often underlies steroid use"],
+   facts:{Class:"Anabolic-Androgenic Steroid",Legal:"Class C (UK) / Schedule III (US)",Origin:"Synthetic testosterone derivatives","Addiction Potential":"Moderate (psychological + hormonal)","Lethal Dose":"Chronic cardiovascular risk","Withdrawal":"Hormonal collapse — months long"}},
+];
+
+const FILTERS = [
+  {k:'all',l:'All Substances'},
+  {k:'opioid',l:'Opioids'},
+  {k:'stimulant',l:'Stimulants'},
+  {k:'depressant',l:'Depressants'},
+  {k:'hallucinogen',l:'Hallucinogens'},
+  {k:'cannabis',l:'Cannabis'},
+];
+
+const MYTHS_DATA = [
+  {myth:true,q:"'Cannabis is completely harmless because it's natural and you can't overdose on it'",a:"False. Natural does not mean safe. Modern high-potency cannabis strains significantly increase psychosis, schizophrenia, and cannabis use disorder risk. Adolescent use causes measurable brain damage.",label:"MYTH",color:"f"},
+  {myth:true,q:"'You can always spot when someone has spiked your drink'",a:"False. GHB is colourless, nearly tasteless, and odourless. Fentanyl is invisible. Drugs used in drink spiking are specifically chosen because they cannot be detected without test strips.",label:"MYTH",color:"f"},
+  {myth:true,q:"'Ecstasy is safe if you drink enough water'",a:"False. Drinking too much water on MDMA causes hyponatraemia — a condition that kills by swelling the brain. Sipping water slowly is important; drinking large quantities has killed people at festivals.",label:"MYTH",color:"f"},
+  {myth:true,q:"'Prescription drugs are safe because they're from a doctor'",a:"False. Prescription opioids started the worst drug crisis in US history. Benzodiazepines can cause fatal withdrawal. 80% of US heroin users started on prescription pills.",label:"MYTH",color:"f"},
+  {myth:false,q:"'Alcohol withdrawal can be more dangerous than heroin withdrawal'",a:"True. While heroin withdrawal is agonising, it is rarely directly fatal. Alcohol withdrawal can cause fatal seizures (delirium tremens) and must always be medically supervised in dependent drinkers.",label:"FACT",color:"t"},
+  {myth:true,q:"'Cocaine is only dangerous if you have a pre-existing heart condition'",a:"False. Cocaine can cause fatal cardiac arrest in young, healthy, first-time users with no known cardiac history. The risk exists for everyone on every use.",label:"MYTH",color:"f"},
+  {myth:false,q:"'The combination of alcohol and cocaine is more dangerous than either drug alone'",a:"True. The combination creates cocaethylene — a third, more toxic substance formed in the liver that is up to 25× more cardiotoxic than cocaine alone.",label:"FACT",color:"t"},
+  {myth:true,q:"'Heroin users can always choose to stop if they really want to'",a:"False. Heroin physically rewires the brain's opioid system. The biology of addiction overrides willpower — this is a well-established medical fact. Treatment, not willpower, is what works.",label:"MYTH",color:"f"},
+  {myth:false,q:"'Tobacco kills more people globally than all illegal drugs combined'",a:"True. Tobacco kills 8 million people per year. All illegal drug overdose deaths combined are approximately 600,000 annually. Nicotine's legal status obscures its status as the world's deadliest addictive substance.",label:"FACT",color:"t"},
+  {myth:true,q:"'Nitrous oxide (laughing gas) is just harmless fun'",a:"False. Regular use destroys vitamin B12, causing permanent spinal cord damage (subacute combined degeneration). Cases in young people are rising dramatically in countries where it is widely used recreationally.",label:"MYTH",color:"f"},
+  {myth:false,q:"'Fentanyl is now found in substances other than heroin'",a:"True. Fentanyl has been detected in cocaine, MDMA, methamphetamine, and pressed counterfeit pills. People using any of these substances may unknowingly take fentanyl — for which they have zero tolerance.",label:"FACT",color:"t"},
+  {myth:true,q:"'Recreational ketamine is only risky if you use too much'",a:"False. Bladder damage from ketamine begins early and is irreversible from the start. Even moderate use has caused young people to require bladder removal surgery before age 30.",label:"MYTH",color:"f"},
+];
+
+const BODY_SYSTEMS = [
+  {name:"Brain & Nervous System",dot:"#e84848",emoji:"🧠",
+   desc:"Multiple substances cause direct neurotoxicity — permanently damaging the brain's dopamine, serotonin, and opioid receptor systems. Some cause measurable brain tissue loss, white matter deterioration, and lasting cognitive impairment.",
+   drugs:["Methamphetamine","Cocaine","Heroin","Alcohol","MDMA / Ecstasy","Inhalants","PCP (Angel Dust)","Benzodiazepines"]},
+  {name:"Heart & Cardiovascular",dot:"#f59e0b",emoji:"❤️",
+   desc:"Stimulants dramatically raise heart rate and blood pressure, causing arrhythmias and cardiac arrest. Alcohol weakens heart muscle. Cocaine + alcohol creates cocaethylene — 25× more cardiotoxic.",
+   drugs:["Cocaine","Methamphetamine","Amphetamine (Speed)","Crack Cocaine","Alcohol","Tobacco / Nicotine","Anabolic Steroids","Bath Salts (Cathinones)"]},
+  {name:"Lungs & Respiratory",dot:"#2dd4bf",emoji:"❤️",
+   desc:"Opioids suppress the brain's drive to breathe — the primary cause of overdose death. Smoked substances cause direct lung damage. Inhalants displace oxygen. Tobacco causes COPD and lung cancer.",
+   drugs:["Heroin","Fentanyl","Cocaine","Tobacco / Nicotine","Inhalants","Crack Cocaine","MDMA / Ecstasy","GHB / GBL"]},
+  {name:"Liver & Kidneys",dot:"#a78bfa",emoji:"❤️",
+   desc:"The liver metabolises all substances and bears the brunt of toxic metabolite accumulation. Alcohol directly destroys liver cells. Synthetic cathinones and inhalants cause organ failure.",
+   drugs:["Alcohol","Heroin","Inhalants","GHB / GBL","Ketamine","Anabolic Steroids","Tramadol","Bath Salts (Cathinones)"]},
+  {name:"Bladder & Urinary",dot:"#4ade80",emoji:"🔴",
+   desc:"Ketamine is uniquely destructive to the bladder — ketamine cystitis destroys the bladder lining, causing excruciating pain, incontinence, and often requiring surgical removal in young users.",
+   drugs:["Ketamine","Tobacco / Nicotine","Tramadol","Benzodiazepines"]},
+  {name:"Mental Health & Psychology",dot:"#f472b6",emoji:"🧩",
+   desc:"Most substances alter brain chemistry in ways that cause lasting psychological damage. Cannabis, LSD, PCP and meth can trigger psychosis. All stimulants eventually cause depression through dopamine depletion.",
+   drugs:["Cannabis","LSD","PCP (Angel Dust)","Methamphetamine","Synthetic Cannabinoids","MDMA / Ecstasy","Bath Salts (Cathinones)","Cocaine"]},
+  {name:"Hormones & Reproduction",dot:"#60a5fa",emoji:"⚡",
+   desc:"Opioids disrupt the hypothalamic-pituitary axis. Anabolic steroids permanently suppress natural testosterone. Tobacco and alcohol reduce fertility. Drug use during pregnancy causes lasting harm to developing children.",
+   drugs:["Heroin","Fentanyl","Anabolic Steroids","Alcohol","Tobacco / Nicotine","Cocaine","Prescription Opioids"]},
+  {name:"Teeth & Oral Health",dot:"#fb923c",emoji:"🦷",
+   desc:"Methamphetamine causes catastrophic 'meth mouth' — rapid dental decay from dry mouth and clenching. Stimulants and acidic substances accelerate enamel erosion across multiple drug types.",
+   drugs:["Methamphetamine","Cocaine","Crack Cocaine","Amphetamine (Speed)","MDMA / Ecstasy","Tobacco / Nicotine"]},
+];
+
+const RISK_CHART_DATA = [
+  {name:"Heroin",emoji:"⚗",addiction:94,physical:90,social:70,overdose:98},
+  {name:"Alcohol",emoji:"⬬",addiction:72,physical:80,social:95,overdose:45},
+  {name:"Fentanyl",emoji:"⬟",addiction:96,physical:92,social:60,overdose:99},
+  {name:"Meth",emoji:"◇",addiction:90,physical:88,social:75,overdose:65},
+  {name:"Cocaine",emoji:"◆",addiction:78,physical:65,social:80,overdose:70},
+  {name:"Crack",emoji:"🪨",addiction:95,physical:72,social:85,overdose:75},
+  {name:"Tobacco",emoji:"◎",addiction:88,physical:78,social:40,overdose:10},
+  {name:"Benzos",emoji:"▣",addiction:75,physical:62,social:55,overdose:55},
+  {name:"Cannabis",emoji:"⬡",addiction:45,physical:35,social:50,overdose:8},
+  {name:"MDMA",emoji:"◈",addiction:52,physical:55,social:50,overdose:48},
+  {name:"Ketamine",emoji:"⬖",addiction:65,physical:60,social:45,overdose:35},
+  {name:"LSD",emoji:"◉",addiction:20,physical:25,social:35,overdose:5},
+];
+
+const QUIZ_DATA = [
+  {q:"Which synthetic opioid is 50–100× more potent than morphine and is now found in counterfeit prescription pills?",opts:["Heroin","Fentanyl","Codeine","Tramadol"],ans:1,exp:"Fentanyl is 50–100× stronger than morphine. A lethal dose is as small as 2mg — invisible to the eye. It's now found in fake Xanax, Adderall, and cocaine, making any pill obtained outside a pharmacy potentially lethal."},
+  {q:"What is the primary physiological cause of death in a heroin or opioid overdose?",opts:["Heart failure","Liver failure","Respiratory depression","Brain haemorrhage"],ans:2,exp:"Opioids suppress the brain's drive to breathe. This respiratory depression — the brain forgetting to breathe — is why opioid overdose kills, and why Naloxone reverses it so quickly."},
+  {q:"Which of these substances can cause FATAL seizures if stopped suddenly after long-term daily use?",opts:["Cannabis","LSD","Cocaine","Alcohol"],ans:3,exp:"Alcohol (and benzodiazepines) withdrawal can cause delirium tremens and life-threatening seizures. Medically supervised detox is essential — abrupt cessation after physical dependency can kill."},
+  {q:"What causes 'meth mouth' — the extreme dental decay seen in methamphetamine users?",opts:["The drug directly erodes enamel","Dry mouth, teeth grinding, and hygiene neglect","High sugar content in the drug","Users eating excessive sugar"],ans:1,exp:"Methamphetamine causes severe dry mouth, intense teeth grinding (bruxism), poor nutrition, and neglect of oral hygiene — together creating catastrophic, rapid dental destruction."},
+  {q:"Which household products are most commonly misused by children as young as 7–12 years old?",opts:["Prescription medications","Alcohol","Inhalants (aerosols, solvents)","Energy drinks"],ans:2,exp:"Inhalants — glue, aerosols, butane, solvents — are legal, cheap, and accessible. They are the most common substances misused by young adolescents and can cause instant death from Sudden Sniffing Death Syndrome on the very first use."},
+  {q:"Why is combining benzodiazepines with alcohol or opioids so dangerous?",opts:["It creates hallucinations","Combined CNS depression can fatally stop breathing","It triggers a severe allergic reaction","The combination creates entirely new toxic chemicals"],ans:1,exp:"All three substances independently suppress the central nervous system. Combined, they multiply the depressant effect synergistically and can stop breathing entirely — one of the leading causes of overdose death."},
+  {q:"When cocaine and alcohol are used together, what dangerous compound does the liver produce?",opts:["Morphine","Cocaethylene","Methanol","Acetaldehyde"],ans:1,exp:"Cocaethylene is a third, novel toxic substance formed only when cocaine and alcohol are consumed simultaneously. It is retained in the heart up to 5× longer than cocaine and is up to 25× more cardiotoxic."},
+  {q:"What percentage of US heroin users report that prescription opioids were their gateway drug?",opts:["40%","60%","80%","25%"],ans:2,exp:"80% of US heroin users started with prescription opioids. The opioid crisis was significantly fuelled by overprescription and aggressive pharmaceutical marketing — patients developed dependency on legal medications then transitioned to cheaper heroin."},
+  {q:"Which organ does recreational ketamine uniquely and irreversibly destroy with regular use?",opts:["The liver","The kidneys","The bladder","The brain"],ans:2,exp:"Ketamine causes ketamine cystitis — progressive, irreversible destruction of the bladder lining. Many regular users require bladder removal surgery before age 30. Damage begins early and cannot be reversed."},
+  {q:"What neurological damage does chronic nitrous oxide use cause?",opts:["Brain tumours","Alzheimer's-like dementia","Spinal cord damage via B12 destruction","Hearing loss"],ans:2,exp:"Nitrous oxide destroys vitamin B12, causing subacute combined degeneration of the spinal cord. This causes permanent weakness, numbness, difficulty walking, and bladder dysfunction — and cases in young people are rising rapidly."},
+];
+
+const TIMELINE_DATA = [
+  {year:"1800s",title:"Opium Wars & Laudanum Epidemic",desc:"Britain forced the opium trade on China through military conflict. Laudanum (opium tincture) was legally sold in pharmacies worldwide, creating the first mass modern addiction crisis.",col:"var(--amber)"},
+  {year:"1898",title:"Heroin Introduced as a 'Safe Medicine'",desc:"Bayer AG marketed heroin as a non-addictive substitute for morphine and sold it over the counter as a cough suppressant. The world's deadliest opioid was once sold in pharmacies.",col:"var(--red)"},
+  {year:"1914",title:"Harrison Narcotics Tax Act (US)",desc:"The first major US federal drug legislation, effectively criminalising opioid and cocaine use. Addiction began to be treated as a moral failure rather than a medical condition.",col:"var(--teal)"},
+  {year:"1971",title:"Nixon Declares the 'War on Drugs'",desc:"The US criminalises addiction rather than treating it as a health issue — a template adopted globally. Now widely criticised for its ineffectiveness, massive cost, and profound racial disparity.",col:"var(--red)"},
+  {year:"1980s",title:"Crack Cocaine Epidemic",desc:"Crack cocaine devastated urban communities, disproportionately affecting Black Americans in the US. The response — mass incarceration — is now recognised as a public health and social justice failure.",col:"var(--red)"},
+  {year:"1990s",title:"OxyContin & The Opioid Crisis Begins",desc:"Purdue Pharma marketed OxyContin as non-addictive, flooding the US market. This ignited a prescription opioid epidemic that has now killed over 500,000 Americans.",col:"var(--amber)"},
+  {year:"2000s",title:"MDMA, GHB & Club Drug Culture",desc:"MDMA, GHB, and ketamine became widespread in club and festival culture, creating new patterns of poly-drug use, overdose, and drug-facilitated sexual assault.",col:"var(--purple)"},
+  {year:"2010s",title:"Synthetic Drug Explosion",desc:"Spice, bath salts, and hundreds of novel psychoactive substances flooded markets, exploiting legal loopholes and causing mass poisonings — particularly among homeless and prison populations.",col:"var(--teal)"},
+  {year:"2016–Now",title:"Fentanyl: The Deadliest Wave Yet",desc:"Illicitly manufactured fentanyl overtook heroin as the primary driver of overdose deaths. Now contaminating cocaine, MDMA, and counterfeit pills — the crisis has no parallel in history.",col:"var(--red)"},
+  {year:"2020s",title:"Nitrous Oxide & Neurological Harm",desc:"Nitrous oxide becomes one of the most widely used recreational drugs globally. An epidemic of spinal cord damage (subacute combined degeneration) emerges in young users across Europe and Australia.",col:"var(--amber)"},
+];
+
+// ═══════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════
+let curFilter = 'all', curView = 'grid', qIdx = 0, qScore = 0, qAnswered = false;
+
+// ═══════════════════════════════════════
+//  RENDER DRUGS
+// ═══════════════════════════════════════
+function renderDrugs(filter) {
+  curFilter = filter || 'all';
+  const grid = document.getElementById('drugsGrid');
+  const list = curFilter === 'all' ? DRUGS : DRUGS.filter(d => d.type === curFilter);
+  grid.className = 'drugs-grid' + (curView === 'list' ? ' lv' : '');
+  grid.innerHTML = list.map((d, i) => `
+    <div class="drug-card reveal" style="animation-delay:${i * 0.04}s" onclick="openModal(${d.id})">
+      <div class="card-visual">
+        <span class="cat-badge">${d.type}</span>
+        ${d.img
+          ? `<img src="${d.img}" alt="${d.name}" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0">`
+          : `<span>${d.emoji}</span>`}
+      </div>
+      <div class="card-body">
+        <div class="card-top">
+          <div class="card-name">${d.name}</div>
+          <span class="dbadge d${d.danger[0]}">${d.danger}</span>
+        </div>
+        <div class="card-also">Also: ${d.also.split(',').slice(0, 2).join(', ')}…</div>
+        <p class="card-desc">${d.short}</p>
+        <div class="card-footer">
+          <div class="card-tags">${d.tags.map(t => `<span class="ctag">${t}</span>`).join('')}</div>
+          <button class="learn-btn" onclick="event.stopPropagation();openModal(${d.id})">View Full Profile →</button>
+        </div>
+      </div>
+    </div>`).join('');
+  observeReveal();
+}
+
+function renderFilters() {
+  document.getElementById('filterBar').innerHTML = FILTERS.map(f =>
+    `<button class="fb${f.k === curFilter ? ' active' : ''}" onclick="filterDrugs('${f.k}',this)">
+      ${f.l} <span style="opacity:.55;font-size:11px">(${f.k === 'all' ? DRUGS.length : DRUGS.filter(d => d.type === f.k).length})</span>
+    </button>`).join('');
+}
+
+function filterDrugs(type, btn) {
+  curFilter = type;
+  document.querySelectorAll('.fb').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderDrugs(type);
+}
+
+function setView(v, btn) {
+  curView = v;
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderDrugs(curFilter);
+}
+
+// ═══════════════════════════════════════
+//  MODAL
+// ═══════════════════════════════════════
+function openModal(id) {
+  const d = DRUGS.find(x => x.id === id);
+  if (!d) return;
+  const meterPct = {critical: 100, high: 65, moderate: 35}[d.danger] || 50;
+  const meterCol = d.danger === 'critical' ? 'var(--red)' : d.danger === 'high' ? 'var(--amber)' : 'var(--teal)';
+
+  document.getElementById('mHero').innerHTML = `
+    ${d.img
+      ? `<img src="${d.img}" alt="${d.name}" class="modal-hero-img-clickable" onclick="openLightbox('${d.img.replace(/'/g,"\\'")}','${d.name.replace(/'/g,"\\'")}');" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0">`
+      : `<span style="font-size:68px;position:relative;z-index:1">${d.emoji}</span>`}
+    <div class="modal-hero-bot"></div>
+    <div style="position:absolute;bottom:12px;left:16px;z-index:2">
+      <span class="dbadge d${d.danger[0]}">${d.danger} risk</span>
+    </div>
+    ${d.img ? `<div style="position:absolute;top:10px;right:10px;z-index:3;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:4px 9px;font-size:11px;color:rgba(255,255,255,0.7);pointer-events:none">🔍 Click to enlarge</div>` : ''}`;
+  document.getElementById('mName').textContent = d.name;
+  document.getElementById('mAlso').textContent = 'Also known as: ' + d.also;
+  document.getElementById('mMeta').innerHTML = d.tags.map(t => `<span class="ctag">${t}</span>`).join('');
+
+  const tabs = ['Overview', 'Body Harms', 'Addiction', 'Prevention', 'Quick Facts'];
+  document.getElementById('mTabs').innerHTML = tabs.map((t, i) =>
+    `<button class="m-tab${i === 0 ? ' active' : ''}" onclick="switchTab(${i},this)">${t}</button>`).join('');
+
+  document.getElementById('mContent').innerHTML = `
+    <div class="tab-p active" id="tp0">
+      <div class="warn-box"><p><strong>⚠ Warning:</strong> ${d.warning}</p></div>
+      <div class="m-sec">What Is It</div>
+      <p class="m-text">${d.what}</p>
+      <div class="meter-wrap">
+        <div class="meter-hd"><span>Danger Level</span><span style="color:var(--text);font-weight:600">${d.danger.toUpperCase()}</span></div>
+        <div class="meter-bg"><div class="meter-fill" id="mFill" style="background:${meterCol}"></div></div>
+      </div>
+    </div>
+    <div class="tab-p" id="tp1">
+      <div class="m-sec">How It Damages the Body</div>
+      <ul class="harm-list">${d.harms.map(h => `<li>${h}</li>`).join('')}</ul>
+    </div>
+    <div class="tab-p" id="tp2">
+      <div class="m-sec">Addiction & Dependency Science</div>
+      <p class="m-text">${d.addiction}</p>
+    </div>
+    <div class="tab-p" id="tp3">
+      <div class="m-sec">Prevention & Recovery Steps</div>
+      <ul class="prev-list">${d.prevention.map(p => `<li>✓ ${p}</li>`).join('')}</ul>
+    </div>
+    <div class="tab-p" id="tp4">
+      <div class="m-sec">Quick Reference Facts</div>
+      <div class="fact-grid">${Object.entries(d.facts).map(([k, v]) =>
+        `<div class="fact-item"><div class="fact-label">${k}</div><div class="fact-value">${v}</div></div>`).join('')}</div>
+    </div>`;
+
+  document.getElementById('mOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => {
+    const f = document.getElementById('mFill');
+    if (f) f.style.width = meterPct + '%';
+  }, 200);
+}
+
+function switchTab(idx, btn) {
+  document.querySelectorAll('.m-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tab-p').forEach((p, i) => p.classList.toggle('active', i === idx));
+  if (idx === 0) setTimeout(() => { const f = document.getElementById('mFill'); if (f) { f.style.width = '0'; setTimeout(() => f.style.width = '80%', 50); } }, 50);
+}
+
+function closeModal() { document.getElementById('mOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+function handleMBg(e) { if (e.target === document.getElementById('mOverlay')) closeModal(); }
+
+// ═══════════════════════════════════════
+//  LIGHTBOX
+// ═══════════════════════════════════════
+function openLightbox(src, name) {
+  const img = document.getElementById('lightboxImg');
+  const cap = document.getElementById('lightboxCaption');
+  img.src = src;
+  img.alt = name;
+  cap.textContent = name;
+  document.getElementById('lightboxOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightboxOverlay').classList.remove('open');
+  // restore modal scroll lock if modal is still open
+  if (document.getElementById('mOverlay').classList.contains('open')) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+}
+function handleLightboxBg(e) {
+  if (e.target === document.getElementById('lightboxOverlay')) closeLightbox();
+}
+
+function shareModal(name) {
+  const text = `Learn about ${name} — ClearMind Drug Awareness: ${window.location.href}#drugs`;
+  if (navigator.share) {
+    navigator.share({ title: `${name} — ClearMind`, text, url: window.location.href });
+  } else {
+    navigator.clipboard.writeText(text).then(() => showToast('🔗 Link copied to clipboard!'));
+  }
+}
+
+// ═══════════════════════════════════════
+//  MYTHS
+// ═══════════════════════════════════════
+function renderMyths() {
+  document.getElementById('mythsGrid').innerHTML = MYTHS_DATA.map((m, i) => `
+    <div class="myth-card myth-${m.color === 'f' ? 'false' : 'true'} reveal" style="animation-delay:${i * 0.06}s">
+      <div class="myth-n">${m.label}</div>
+      <div class="myth-label ${m.color}">${m.color === 'f' ? '✗ MYTH' : '✓ FACT'}</div>
+      <div class="myth-q">${m.q}</div>
+      <div class="myth-a">${m.a}</div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════
+//  BODY MAP
+// ═══════════════════════════════════════
+function renderBodyMap() {
+  document.getElementById('bmList').innerHTML = BODY_SYSTEMS.map((s, i) => `
+    <div class="bm-item${i === 0 ? ' active' : ''}" onclick="selectBodySystem(${i},this)">
+      <div class="bm-dot" style="background:${s.dot}"></div>
+      <span class="bm-name">${s.emoji} ${s.name}</span>
+    </div>`).join('');
+  selectBodySystem(0, document.querySelector('.bm-item'));
+}
+
+function selectBodySystem(idx, el) {
+  document.querySelectorAll('.bm-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const s = BODY_SYSTEMS[idx];
+  document.getElementById('bmPanel').innerHTML = `
+    <div class="bm-panel-title" style="color:${s.dot}">${s.emoji} ${s.name}</div>
+    <div class="bm-panel-desc">${s.desc}</div>
+    <div class="m-sec">Substances That Damage This System</div>
+    <div class="bm-drugs">${s.drugs.map(name => {
+      const drug = DRUGS.find(d => d.name === name);
+      return `<span class="bm-drug-tag" onclick="${drug ? 'openModal(' + drug.id + ')' : ''}" title="Click to open profile">${name}</span>`;
+    }).join('')}</div>`;
+}
+
+// ═══════════════════════════════════════
+//  RISK CHART
+// ═══════════════════════════════════════
+function renderRiskChart() {
+  document.getElementById('rcGrid').innerHTML = RISK_CHART_DATA.map((r, i) => `
+    <div class="rc-row reveal" style="animation-delay:${i * 0.05}s" onclick="jumpDrug(r.name)">
+      <div class="rc-header">
+        <div class="rc-name">${r.emoji} ${r.name}</div>
+        <div class="rc-score">${Math.round((r.addiction + r.physical + r.social + r.overdose) / 4)}</div>
+      </div>
+      <div class="rc-bars">
+        ${[['Addiction',r.addiction,'#e84848'],['Physical Harm',r.physical,'#f59e0b'],['Social Harm',r.social,'#a78bfa'],['Overdose Risk',r.overdose,'#2dd4bf']].map(([lbl,val,col]) => `
+        <div class="rc-bar-row">
+          <div class="rc-bar-lbl">${lbl}</div>
+          <div class="rc-bar-bg"><div class="rc-bar-fill" style="background:${col}" data-w="${val}"></div></div>
+        </div>`).join('')}
+      </div>
+    </div>`).join('');
+
+  // Animate bars on scroll
+  const rcObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.rc-bar-fill').forEach(bar => {
+          bar.style.width = bar.dataset.w + '%';
+        });
+        rcObs.unobserve(e.target);
+      }
+    });
+  }, {threshold: 0.2});
+  document.querySelectorAll('.rc-row').forEach(r => rcObs.observe(r));
+}
+
+// ═══════════════════════════════════════
+//  QUIZ
+// ═══════════════════════════════════════
+function renderQuiz() {
+  const c = document.getElementById('quizContent');
+  const p = document.getElementById('qProg');
+  if (qIdx >= QUIZ_DATA.length) {
+    p.style.width = '100%';
+    const pct = Math.round((qScore / QUIZ_DATA.length) * 100);
+    const msg = pct >= 80 ? "Excellent awareness! You understand the real risks. Share this site to help others stay safe."
+      : pct >= 50 ? "Good foundation — review the substance profiles to deepen your understanding of specific risks."
+      : "Keep learning — drug awareness is vital for protecting yourself and your loved ones. Explore the guides above.";
+    const emoji = pct >= 80 ? "🏆" : pct >= 50 ? "📚" : "⚠️";
+    c.innerHTML = `<div class="quiz-result">
+      <div class="q-score">${emoji} ${qScore}/${QUIZ_DATA.length}</div>
+      <div class="q-score-lbl">${pct}% correct</div>
+      <div class="q-msg">${msg}</div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px">
+        <button class="btn-p" onclick="restartQuiz()" style="display:inline-flex">↺ Retake Quiz</button>
+        <button class="btn-s" onclick="shareQuizResult(${pct})" style="display:inline-flex">🔗 Share Result</button>
+      </div>
+    </div>`;
+    return;
+  }
+  p.style.width = ((qIdx / QUIZ_DATA.length) * 100) + '%';
+  const q = QUIZ_DATA[qIdx];
+  qAnswered = false;
+  c.innerHTML = `
+    <div class="quiz-q">${q.q}</div>
+    <div class="quiz-opts">${q.opts.map((o, i) =>
+      `<button class="quiz-opt" onclick="answerQuiz(${i})">${o}</button>`).join('')}</div>
+    <div class="quiz-fb" id="qFb"></div>
+    <div class="quiz-nav">
+      <span class="q-counter">Question ${qIdx + 1} of ${QUIZ_DATA.length}</span>
+      <button class="q-next" id="qNext" onclick="nextQ()" style="display:none">
+        ${qIdx === QUIZ_DATA.length - 1 ? 'See Results →' : 'Next Question →'}
+      </button>
+    </div>`;
+}
+
+function answerQuiz(i) {
+  if (qAnswered) return;
+  qAnswered = true;
+  const q = QUIZ_DATA[qIdx];
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach(o => o.disabled = true);
+  opts[q.ans].classList.add('correct');
+  const fb = document.getElementById('qFb');
+  if (i === q.ans) {
+    qScore++;
+    fb.className = 'quiz-fb c show';
+    fb.innerHTML = '✓ Correct! ' + q.exp;
+  } else {
+    opts[i].classList.add('wrong');
+    fb.className = 'quiz-fb w show';
+    fb.innerHTML = '✗ Not quite. ' + q.exp;
+  }
+  document.getElementById('qNext').style.display = 'block';
+}
+function nextQ() { qIdx++; renderQuiz(); }
+function restartQuiz() { qIdx = 0; qScore = 0; renderQuiz(); }
+function shareQuizResult(pct) {
+  const text = `I scored ${pct}% on the ClearMind Drug Awareness Quiz. Test your knowledge: ${window.location.href}#quiz`;
+  if (navigator.share) navigator.share({title:'ClearMind Quiz',text,url:window.location.href});
+  else navigator.clipboard.writeText(text).then(() => showToast('🔗 Result link copied!'));
+}
+
+// ═══════════════════════════════════════
+//  TIMELINE
+// ═══════════════════════════════════════
+function renderTimeline() {
+  document.getElementById('tlWrap').innerHTML = TIMELINE_DATA.map((t, i) => `
+    <div class="tl-item reveal" style="animation-delay:${i * 0.08}s">
+      <div class="tl-dot" style="background:${t.col}"></div>
+      <div class="tl-card">
+        <div class="tl-year">${t.year}</div>
+        <div class="tl-title">${t.title}</div>
+        <div class="tl-desc">${t.desc}</div>
+      </div>
+    </div>`).join('');
+  observeReveal();
+}
+
+// ═══════════════════════════════════════
+//  TICKER
+// ═══════════════════════════════════════
+function renderTicker() {
+  const items = DRUGS.map(d => `<span>${d.emoji}&nbsp;${d.name}</span><span class="ticker-sep">&nbsp;·&nbsp;</span>`).join('');
+  document.getElementById('ticker').innerHTML = items + items;
+}
+
+// ═══════════════════════════════════════
+//  SEARCH
+// ═══════════════════════════════════════
+function openSearch() {
+  document.getElementById('searchOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('searchInput').focus(), 80);
+  doSearch('');
+}
+function closeSearch() {
+  document.getElementById('searchOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  document.getElementById('searchInput').value = '';
+}
+function handleSearchBg(e) { if (e.target === document.getElementById('searchOverlay')) closeSearch(); }
+function doSearch(q) {
+  const res = q ? DRUGS.filter(d =>
+    [d.name, d.also, d.type, d.short].some(s => s.toLowerCase().includes(q.toLowerCase()))
+  ) : DRUGS;
+  document.getElementById('searchResults').innerHTML = res.length
+    ? res.map(d => `<div class="search-result-item" onclick="pickSearch(${d.id})">
+        <span class="sr-emoji">${d.emoji}</span>
+        <div>
+          <div class="sr-name">${d.name} <span class="dbadge d${d.danger[0]}" style="vertical-align:middle;margin-left:5px">${d.danger}</span></div>
+          <div class="sr-desc">${d.short.substring(0, 88)}…</div>
+        </div></div>`).join('')
+    : '<p style="text-align:center;color:var(--muted);padding:24px 0">No substances found</p>';
+}
+function pickSearch(id) { closeSearch(); setTimeout(() => openModal(id), 280); }
+
+// ═══════════════════════════════════════
+//  NAV
+// ═══════════════════════════════════════
+function goTo(e, id) {
+  if (e) e.preventDefault();
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  setActiveNav(id);
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+function goToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+function setActiveNav(id) {
+  document.querySelectorAll('.nav-links a').forEach(a =>
+    a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+}
+
+// ═══════════════════════════════════════
+//  THEME TOGGLE
+// ═══════════════════════════════════════
+function toggleTheme() {
+  const isLight = document.body.classList.toggle('light');
+  document.getElementById('themeBtn').textContent = isLight ? '🌙' : '☀️';
+  localStorage.setItem('clearMindTheme', isLight ? 'light' : 'dark');
+}
+(function initTheme() {
+  const saved = localStorage.getItem('clearMindTheme');
+  if (saved === 'light') {
+    document.body.classList.add('light');
+    const btn = document.getElementById('themeBtn');
+    if (btn) btn.textContent = '🌙';
+  }
+})();
+
+// ═══════════════════════════════════════
+//  SHARE & PRINT
+// ═══════════════════════════════════════
+function shareUrl() {
+  const url = 'https://www.xyz.com';
+  const text = 'ClearMind — Science-backed drug awareness information: ' + url;
+
+  if (navigator.share) {
+    navigator.share({
+      title: 'ClearMind — Science-backed drug awareness',
+      text: text,
+      url: url
+    });
+  } else {
+    navigator.clipboard.writeText(url)
+      .then(() => showToast('🔗 URL copied to clipboard!'));
+  }
+}
+function printPage() { window.print(); }
+
+// footer jump
+function jumpDrug(name) {
+  const d = DRUGS.find(x => x.name === name);
+  if (!d) return;
+  document.getElementById('drugs').scrollIntoView({ behavior: 'smooth' });
+  setTimeout(() => openModal(d.id), 600);
+}
+
+// ═══════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ═══════════════════════════════════════
+//  SCROLL
+// ═══════════════════════════════════════
+window.addEventListener('scroll', () => {
+  const s = window.scrollY;
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('progressBar').style.width = (s / max * 100) + '%';
+  document.getElementById('nav').classList.toggle('scrolled', s > 30);
+  document.getElementById('backTop').classList.toggle('visible', s > 380);
+  ['drugs','signs','myths','bodymap','overdose','riskchart','prevention','quiz','timeline'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    if (r.top <= 80 && r.bottom > 80) setActiveNav(id);
+  });
+});
+
+// ═══════════════════════════════════════
+//  REVEAL
+// ═══════════════════════════════════════
+function observeReveal() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el => obs.observe(el));
+}
+
+// ═══════════════════════════════════════
+//  COUNTER ANIMATION
+// ═══════════════════════════════════════
+function animateCounters() {
+  document.querySelectorAll('[data-target]').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    const suf = el.dataset.suf || '';
+    let start = null;
+    const step = ts => {
+      if (!start) start = ts;
+      const prog = Math.min((ts - start) / 1800, 1);
+      const eased = 1 - Math.pow(1 - prog, 3);
+      el.textContent = Math.floor(eased * target) + suf;
+      if (prog < 1) requestAnimationFrame(step);
+      else el.textContent = target + suf;
+    };
+    requestAnimationFrame(step);
+  });
+}
+const cObs = new IntersectionObserver(([e]) => { if (e.isIntersecting) animateCounters(); }, { threshold: 0.4 });
+const hs = document.querySelector('.hero-stats');
+if (hs) cObs.observe(hs);
+
+// ═══════════════════════════════════════
+//  PARTICLES
+// ═══════════════════════════════════════
+(function particles() {
+  const c = document.getElementById('particles');
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const sz = Math.random() * 4 + 2;
+    p.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random() * 100}%;
+      animation-duration:${Math.random() * 18 + 14}s;animation-delay:${Math.random() * 14}s;
+      opacity:${Math.random() * 0.35 + 0.1}`;
+    c.appendChild(p);
+  }
+})();
+
+// ═══════════════════════════════════════
+//  CURSOR
+// ═══════════════════════════════════════
+const $c = document.getElementById('cursor');
+const $r = document.getElementById('cursorRing');
+document.addEventListener('mousemove', e => {
+  $c.style.transform = `translate(${e.clientX - 5}px,${e.clientY - 5}px)`;
+  $r.style.transform = `translate(${e.clientX - 16}px,${e.clientY - 16}px)`;
+});
+document.querySelectorAll('button,a,.drug-card,.sign-card,.myth-card,.rc-row,.bm-item').forEach(el => {
+  el.addEventListener('mouseenter', () => { $r.style.width = '48px'; $r.style.height = '48px'; $r.style.borderColor = 'rgba(232,72,72,0.8)'; });
+  el.addEventListener('mouseleave', () => { $r.style.width = '32px'; $r.style.height = '32px'; $r.style.borderColor = 'rgba(232,72,72,0.5)'; });
+});
+
+// ═══════════════════════════════════════
+//  KEYBOARD
+// ═══════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
+  if (e.key === 'Escape') { closeLightbox(); closeModal(); closeSearch(); }
+});
+
+// ═══════════════════════════════════════
+//  COOKIE
+// ═══════════════════════════════════════
+function dismissCookie() { document.getElementById('cookie').classList.add('gone'); }
+setTimeout(() => { const c = document.getElementById('cookie'); if (c) c.classList.add('gone'); }, 7000);
+
+// ═══════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════
+renderFilters();
+renderDrugs('all');
+renderMyths();
+renderBodyMap();
+renderTimeline();
+renderTicker();
+renderRiskChart();
+renderQuiz();
+observeReveal();
+</script>
+</body>
+</html>
