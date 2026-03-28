@@ -337,6 +337,16 @@ body.light .od-steps li{color:#4a4845;background:rgba(0,0,0,0.06)}
 .rc-bar-bg{flex:1;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
 .rc-bar-fill{height:100%;border-radius:3px;transition:width 1s .4s var(--ease);width:0}
 
+/* RISK CHART TOOLTIP */
+.rc-bar-row{position:relative}
+.rc-tooltip{position:absolute;left:50%;bottom:0;transform:translateX(-50%) translateY(calc(100% + 7px)) scale(.92);
+  background:var(--card);border:1px solid var(--border2);border-radius:7px;
+  padding:5px 10px;font-size:12px;font-weight:600;color:var(--text);
+  white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .18s,transform .18s;
+  z-index:50;box-shadow:0 4px 16px rgba(0,0,0,0.35)}
+.rc-bar-row:hover .rc-tooltip{opacity:1;transform:translateX(-50%) translateY(calc(100% + 7px)) scale(1)}
+.rc-tooltip-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:middle}
+
 /* PREVENTION */
 #prevention{background:var(--bg)}
 .prev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:16px;margin-top:34px}
@@ -1400,6 +1410,7 @@ function renderRiskChart() {
         <div class="rc-bar-row">
           <div class="rc-bar-lbl">${lbl}</div>
           <div class="rc-bar-bg"><div class="rc-bar-fill" style="background:${col}" data-w="${val}"></div></div>
+          <div class="rc-tooltip"><span class="rc-tooltip-dot" style="background:${col}"></span>${lbl}: <strong>${val}/100</strong></div>
         </div>`).join('')}
       </div>
     </div>`).join('');
@@ -1437,6 +1448,7 @@ function renderQuiz() {
       <div class="q-msg">${msg}</div>
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px">
         <button class="btn-p" onclick="restartQuiz()" style="display:inline-flex">↺ Retake Quiz</button>
+        <button class="btn-s" onclick="shareQuizResult(${pct})" style="display:inline-flex">🔗 Share Result</button>
       </div>
     </div>`;
     return;
@@ -1478,6 +1490,11 @@ function answerQuiz(i) {
 }
 function nextQ() { qIdx++; renderQuiz(); }
 function restartQuiz() { qIdx = 0; qScore = 0; renderQuiz(); }
+function shareQuizResult(pct) {
+  const text = `I scored ${pct}% on the ClearMind Drug Awareness Quiz. Test your knowledge: ${window.location.href}#quiz`;
+  if (navigator.share) navigator.share({title:'ClearMind Quiz',text,url:window.location.href});
+  else navigator.clipboard.writeText(text).then(() => showToast('🔗 Result link copied!'));
+}
 
 // ═══════════════════════════════════════
 //  TIMELINE
