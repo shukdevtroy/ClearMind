@@ -257,8 +257,6 @@ Find the `QUIZ_DATA` array and add:
 |---|---|
 | ![Modal](modal.PNG) | ![Lightbox](lt.PNG) |
 
-> Replace these placeholders with real screenshots before publishing.
-
 ---
 
 ## 🤝 Contributing
