@@ -1862,12 +1862,36 @@ observeReveal();
 .cm-token-box {
   background: var(--card); border: 1px solid var(--border2);
   border-radius: 20px; padding: 30px 26px; max-width: 420px; width: 100%;
-  animation: msgSlide .3s var(--ease) both;
+  animation: msgSlide .3s var(--ease) both; position: relative;
 }
 .cm-token-box h3 { font-family: var(--serif); font-size: 22px; margin-bottom: 6px; }
 .cm-token-box .cm-modal-sub { font-size: 13.5px; color: var(--muted); margin-bottom: 22px; line-height: 1.65; }
 .cm-token-box a { color: var(--red); text-decoration: none; }
 .cm-token-box a:hover { text-decoration: underline; }
+
+/* X close button */
+.cm-modal-x {
+  position: absolute; top: 14px; right: 14px;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--bg3); border: 1px solid var(--border2);
+  color: var(--muted); font-size: 14px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s; line-height: 1;
+}
+.cm-modal-x:hover { background: var(--red-dim); color: var(--red); border-color: rgba(232,72,72,0.4); }
+
+/* Saved key indicator */
+.cm-saved-badge {
+  font-size: 12px; font-weight: 600; color: #4ade80;
+  background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.25);
+  border-radius: 7px; padding: 7px 12px; margin-bottom: 10px;
+}
+
+/* Footer hint */
+.cm-modal-footer-note {
+  font-size: 11px; color: var(--muted2); text-align: center;
+  margin-top: 12px; line-height: 1.5;
+}
 
 .cm-provider-tabs { display: flex; gap: 6px; margin-bottom: 16px; }
 .cm-ptab {
@@ -2060,32 +2084,37 @@ observeReveal();
 <!-- API KEY MODAL -->
 <div id="cm-token-modal">
   <div class="cm-token-box">
+    <button class="cm-modal-x" onclick="dismissModal()" title="Close — use Demo Mode">✕</button>
     <h3>Connect AI Assistant</h3>
-    <p class="cm-modal-sub">Choose a provider — all have <strong style="color:var(--text)">free tiers</strong>, no credit card needed.</p>
+    <p class="cm-modal-sub">Choose a provider — all have <strong style="color:var(--text)">free tiers</strong>, no credit card needed. Your key is saved in your browser forever.</p>
 
     <div class="cm-provider-tabs">
-      <button class="cm-ptab active" onclick="switchTab('groq',this)">⚡ Groq</button>
-      <button class="cm-ptab" onclick="switchTab('openrouter',this)">🔀 OpenRouter</button>
-      <button class="cm-ptab" onclick="switchTab('hf',this)">🤗 HuggingFace</button>
+      <button class="cm-ptab active" id="ptab-groq" onclick="switchTab('groq',this)">⚡ Groq</button>
+      <button class="cm-ptab" id="ptab-openrouter" onclick="switchTab('openrouter',this)">🔀 OpenRouter</button>
+      <button class="cm-ptab" id="ptab-hf" onclick="switchTab('hf',this)">🤗 HuggingFace</button>
     </div>
 
     <div class="cm-provider-panel active" id="panel-groq">
       <p>Fastest free AI — Llama 3.3 70B at 300+ tokens/sec. Get a free key at <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> (no card needed).</p>
+      <div class="cm-saved-badge" id="saved-groq" style="display:none">✅ Key saved — you're connected</div>
       <input id="cm-token-input" type="password" placeholder="gsk_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" />
     </div>
     <div class="cm-provider-panel" id="panel-openrouter">
       <p>27 free models via one API. Get a free key at <a href="https://openrouter.ai/settings/keys" target="_blank">openrouter.ai</a> (no card needed). Uses Llama 3.3 70B.</p>
+      <div class="cm-saved-badge" id="saved-openrouter" style="display:none">✅ Key saved — you're connected</div>
       <input id="cm-token-input-or" type="password" placeholder="sk-or-xxxxxxxxxxxxxxxxxxxx" autocomplete="off" />
     </div>
     <div class="cm-provider-panel" id="panel-hf">
-      <p>Free inference via HuggingFace router endpoint. Get a token at <a href="https://huggingface.co/settings/tokens" target="_blank">huggingface.co/settings/tokens</a> (Read access).</p>
+      <p>Free inference via HuggingFace. Get a token at <a href="https://huggingface.co/settings/tokens" target="_blank">huggingface.co/settings/tokens</a> (Read access).</p>
+      <div class="cm-saved-badge" id="saved-hf" style="display:none">✅ Key saved — you're connected</div>
       <input id="cm-token-input-hf" type="password" placeholder="hf_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" />
     </div>
 
     <div class="cm-token-btns">
       <button id="cm-token-save" onclick="saveToken()">Connect &amp; Start</button>
-      <button id="cm-token-skip" onclick="skipToken()">Demo Mode</button>
+      <button id="cm-token-skip" onclick="dismissModal()">Use Demo Mode</button>
     </div>
+    <p class="cm-modal-footer-note">Closing this popup will use Demo Mode with pre-written responses.</p>
   </div>
 </div>
 
@@ -2155,6 +2184,26 @@ function switchTab(name, btn) {
   document.getElementById('panel-' + name).classList.add('active');
 }
 
+// Populate inputs and show saved badges for any previously stored keys
+function populateSavedKeys() {
+  var map = { groq: 'cm-token-input', openrouter: 'cm-token-input-or', hf: 'cm-token-input-hf' };
+  var names = ['groq', 'openrouter', 'hf'];
+  for (var i = 0; i < names.length; i++) {
+    var name = names[i];
+    var cfg = PROVIDERS[name];
+    var saved = '';
+    try { saved = localStorage.getItem(cfg.storageKey) || ''; } catch(e) {}
+    var inputEl = document.getElementById(map[name]);
+    var badgeEl = document.getElementById('saved-' + name);
+    if (cfg.validate(saved)) {
+      if (inputEl) inputEl.value = saved;
+      if (badgeEl) badgeEl.style.display = 'block';
+    } else {
+      if (badgeEl) badgeEl.style.display = 'none';
+    }
+  }
+}
+
 function saveToken() {
   var inputMap = { groq: 'cm-token-input', openrouter: 'cm-token-input-or', hf: 'cm-token-input-hf' };
   var inputEl = document.getElementById(inputMap[activeTab]);
@@ -2169,20 +2218,36 @@ function saveToken() {
   try { localStorage.setItem(cfg.storageKey, key); } catch(e) {}
   activeProvider = activeTab;
   activeKey = key;
+  cmDemoMode = false;
   closeTokenModal();
 }
 
-function skipToken() {
+// X button or "Use Demo Mode" — close popup and fall back to demo
+function dismissModal() {
   cmDemoMode = true;
-  closeTokenModal();
+  activeProvider = null;
+  activeKey = '';
+  var modal = document.getElementById('cm-token-modal');
+  if (modal) modal.style.display = 'none';
+  updateBadge();
+  var msgs = document.getElementById('cm-msgs');
+  if (msgs && msgs.children.length === 0) {
+    addBotMsg("Hi! I am ClearMind AI in Demo Mode — pre-written responses only. To unlock full AI, click the badge in the chat header and enter a free API key.");
+  }
 }
 
 function closeTokenModal() {
   var modal = document.getElementById('cm-token-modal');
   if (modal) modal.style.display = 'none';
   updateBadge();
-  addBotMsg("Hi! I am ClearMind AI — here to provide science-backed information about drugs, risks, and recovery. What would you like to know?");
+  var msgs = document.getElementById('cm-msgs');
+  if (msgs && msgs.children.length === 0) {
+    addBotMsg("Hi! I am ClearMind AI — here to provide science-backed information about drugs, risks, and recovery. What would you like to know?");
+  }
 }
+
+// Keep skipToken as alias so nothing breaks
+function skipToken() { dismissModal(); }
 
 function updateBadge() {
   var badge = document.getElementById('cm-badge');
@@ -2201,6 +2266,7 @@ function updateBadge() {
 }
 
 function restoreKey() {
+  populateSavedKeys(); // pre-fill inputs + show saved badges
   var names = ['groq', 'openrouter', 'hf'];
   for (var i = 0; i < names.length; i++) {
     var name = names[i];
@@ -2210,10 +2276,12 @@ function restoreKey() {
     if (cfg.validate(saved)) {
       activeProvider = name;
       activeKey = saved;
-      closeTokenModal();
+      cmDemoMode = false;
+      closeTokenModal(); // hides modal, shows greeting once
       return;
     }
   }
+  // No saved key — modal stays visible, user must connect or dismiss
 }
 
 window.addEventListener('DOMContentLoaded', restoreKey);
@@ -2469,6 +2537,7 @@ function switchProvider(name) {
     activeTab = name;
     var modal = document.getElementById('cm-token-modal');
     if (modal) modal.style.display = 'flex';
+    populateSavedKeys();
     // Pre-select the right tab in the modal
     var tabs = document.querySelectorAll('.cm-ptab');
     var panels = document.querySelectorAll('.cm-provider-panel');
