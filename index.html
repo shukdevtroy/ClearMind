@@ -1883,15 +1883,23 @@ observeReveal();
 .cm-provider-panel.active { display: block; }
 .cm-provider-panel p { font-size: 12.5px; color: var(--muted); margin-bottom: 10px; line-height: 1.6; }
 
-#cm-token-input {
+#cm-token-input,
+#cm-token-input-or,
+#cm-token-input-hf {
   width: 100%; background: var(--bg3); border: 1px solid var(--border2);
   border-radius: 9px; padding: 11px 14px; font-size: 13.5px;
   font-family: var(--sans); color: var(--text); outline: none;
   margin-bottom: 12px; transition: border-color .2s;
 }
-#cm-token-input:focus { border-color: rgba(232,72,72,0.45); }
-#cm-token-input::placeholder { color: var(--muted); }
-#cm-token-input.error { border-color: rgba(232,72,72,0.7); }
+#cm-token-input:focus,
+#cm-token-input-or:focus,
+#cm-token-input-hf:focus { border-color: rgba(232,72,72,0.45); }
+#cm-token-input::placeholder,
+#cm-token-input-or::placeholder,
+#cm-token-input-hf::placeholder { color: var(--muted); }
+#cm-token-input.error,
+#cm-token-input-or.error,
+#cm-token-input-hf.error { border-color: rgba(232,72,72,0.7); }
 
 .cm-token-btns { display: flex; gap: 8px; }
 #cm-token-save {
@@ -2067,11 +2075,11 @@ observeReveal();
     </div>
     <div class="cm-provider-panel" id="panel-openrouter">
       <p>27 free models via one API. Get a free key at <a href="https://openrouter.ai/settings/keys" target="_blank">openrouter.ai</a> (no card needed). Uses Llama 3.3 70B.</p>
-      <input id="cm-token-input" type="password" placeholder="sk-or-xxxxxxxxxxxxxxxxxxxx" autocomplete="off" />
+      <input id="cm-token-input-or" type="password" placeholder="sk-or-xxxxxxxxxxxxxxxxxxxx" autocomplete="off" />
     </div>
     <div class="cm-provider-panel" id="panel-hf">
       <p>Free inference via HuggingFace router endpoint. Get a token at <a href="https://huggingface.co/settings/tokens" target="_blank">huggingface.co/settings/tokens</a> (Read access).</p>
-      <input id="cm-token-input" type="password" placeholder="hf_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" />
+      <input id="cm-token-input-hf" type="password" placeholder="hf_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" />
     </div>
 
     <div class="cm-token-btns">
@@ -2105,7 +2113,7 @@ var PROVIDERS = {
     validate: function(k) { return k && k.indexOf('sk-or-') === 0 && k.length > 10; }
   },
   hf: {
-    url: 'https://router.huggingface.co/hf-inference/models/mistralai/Mistral-7B-Instruct-v0.3/v1/chat/completions',
+    url: 'https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3/v1/chat/completions',
     model: 'mistralai/Mistral-7B-Instruct-v0.3',
     label: 'HuggingFace x Mistral 7B',
     badgeClass: '',
