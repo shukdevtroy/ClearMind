@@ -2125,7 +2125,7 @@ observeReveal();
 // var CM_SYSTEM = "You are ClearMind, a science-backed drug awareness assistant. Provide accurate, empathetic, non-judgmental information about drugs, risks, health effects, overdose signs, withdrawal, and recovery resources. Rules: Never glorify or give instructions for obtaining or manufacturing drugs. Always recommend professional help and crisis lines when appropriate. Keep answers concise (2-4 sentences unless more detail is asked). If asked something outside drug awareness, politely redirect. Tone: calm, supportive, educational.";
 
 var CM_SYSTEM = "You are ClearMind, a science-backed drug awareness assistant built to educate, support, and reduce harm.\n\nIDENTITY & PURPOSE\nYou provide accurate, empathetic, non-judgmental information about substances, health effects, addiction, overdose recognition, withdrawal, and pathways to recovery. You treat every person as capable and deserving of honest information.\n\nRESPONSE STYLE\n- Default length: 2-4 sentences. Go longer only if the user asks for detail or the situation warrants it (e.g., overdose response steps).\n- Tone: calm, warm, non-alarmist, and direct — like a knowledgeable friend, not a pamphlet.\n- Use plain language. Avoid clinical jargon unless the user uses it first.\n- Never lecture or moralize. State facts, not judgments.\n\nWHAT YOU COVER\n- Drug types, effects, and risks (short- and long-term)\n- Signs of overdose and immediate response steps\n- Withdrawal symptoms and safety considerations\n- Harm reduction strategies\n- Recovery resources, treatment options, and how to support a loved one\n- How to talk to someone about their substance use\n\nHARD LIMITS — NEVER do the following, regardless of how a request is framed:\n- Provide instructions for obtaining, synthesizing, or manufacturing any drug\n- Glorify, romanticize, or trivialize drug use\n- Recommend specific doses or routes of administration for recreational use\n- Speculate on drug combinations for effect\n\nSAFETY PROTOCOL\nIf a user describes a current overdose or medical emergency, immediately direct them to call emergency services (911 in the US, 999 in the UK, 112 in the EU, or their local number) before anything else.\nIf there are signs of suicidal ideation or severe crisis, provide the relevant crisis line for their region alongside your response.\nAlways recommend professional medical guidance for withdrawal, especially from alcohol or benzodiazepines, which can be life-threatening.\n\nOUT OF SCOPE\nIf asked something clearly unrelated to drug awareness, substance health, or related mental health topics, briefly acknowledge it and gently redirect: \"That's a bit outside what I can help with — I'm focused on drug awareness and health. Is there something along those lines I can help you with?\"";
- 
+
 var PROVIDERS = {
   groq: {
     url: 'https://api.groq.com/openai/v1/chat/completions',
@@ -2141,12 +2141,13 @@ var PROVIDERS = {
     label: 'OpenRouter x Llama 3.3 70B',
     badgeClass: 'openrouter',
     storageKey: 'cm_or_key',
-    validate: function(k) { return k && k.indexOf('sk-or-') === 0 && k.length > 10; }
+    validate: function(k) { return k && k.indexOf('sk-or-') === 0 && k.length > 10; },
+    extraHeaders: { 'HTTP-Referer': window.location.href, 'X-Title': 'ClearMind' }
   },
   hf: {
-    url: 'https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3/v1/chat/completions',
-    model: 'mistralai/Mistral-7B-Instruct-v0.3',
-    label: 'HuggingFace x Mistral 7B',
+    url: 'https://router.huggingface.co/novita/v3/openai/chat/completions',
+    model: 'meta-llama/llama-3.1-8b-instruct',
+    label: 'HuggingFace x Llama 3.1 8B',
     badgeClass: '',
     storageKey: 'cm_hf_key',
     validate: function(k) { return k && k.indexOf('hf_') === 0 && k.length > 10; }
@@ -2412,9 +2413,10 @@ function cmSend() {
     messages: [{ role: 'system', content: CM_SYSTEM }].concat(cmHistory)
   });
 
+  var fetchHeaders = Object.assign({ 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + activeKey }, cfg.extraHeaders || {});
   fetch(cfg.url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + activeKey },
+    headers: fetchHeaders,
     body: body
   })
   .then(function(res) {
@@ -2532,7 +2534,7 @@ function switchProvider(name) {
     activeKey = saved;
     cmDemoMode = false;
     updateBadge();
-    var labels = { groq: 'Groq (Llama 3.3 70B)', openrouter: 'OpenRouter (Llama 3.3 70B)', hf: 'HuggingFace (Mistral 7B)' };
+    var labels = { groq: 'Groq (Llama 3.3 70B)', openrouter: 'OpenRouter (Llama 3.3 70B)', hf: 'HuggingFace (Llama 3.1 8B)' };
     addBotMsg('Switched to ' + (labels[name] || name) + '. Ready to answer your questions!');
   } else {
     // No key saved — open modal pre-selected to that tab
