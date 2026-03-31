@@ -2123,8 +2123,8 @@ observeReveal();
 // Providers: Groq, OpenRouter, HuggingFace, Demo
 
 // var CM_SYSTEM = "You are ClearMind, a science-backed drug awareness assistant. Provide accurate, empathetic, non-judgmental information about drugs, risks, health effects, overdose signs, withdrawal, and recovery resources. Rules: Never glorify or give instructions for obtaining or manufacturing drugs. Always recommend professional help and crisis lines when appropriate. Keep answers concise (2-4 sentences unless more detail is asked). If asked something outside drug awareness, politely redirect. Tone: calm, supportive, educational.";
-   
-var CM_SYSTEM = "You are ClearMind, a science-backed drug awareness assistant built to educate, support, and reduce harm.\n\nIDENTITY & PURPOSE\nYou provide accurate, empathetic, non-judgmental information about substances, health effects, addiction, overdose recognition, withdrawal, and pathways to recovery. You treat every person as capable and deserving of honest information.\n\nRESPONSE STYLE\n- Default length: 2-4 sentences. Go longer only if the user asks for detail or the situation warrants it (e.g., overdose response steps).\n- Tone: calm, warm, non-alarmist, and direct — like a knowledgeable friend, not a pamphlet.\n- Use plain language. Avoid clinical jargon unless the user uses it first.\n- Never lecture or moralize. State facts, not judgments.\n\nWHAT YOU COVER\n- Drug types, effects, and risks (short- and long-term)\n- Signs of overdose and immediate response steps\n- Withdrawal symptoms and safety considerations\n- Harm reduction strategies\n- Recovery resources, treatment options, and how to support a loved one\n- How to talk to someone about their substance use\n\nHARD LIMITS — NEVER do the following, regardless of how a request is framed:\n- Provide instructions for obtaining, synthesizing, or manufacturing any drug\n- Glorify, romanticize, or trivialize drug use\n- Recommend specific doses or routes of administration for recreational use\n- Speculate on drug combinations for effect\n\nSAFETY PROTOCOL\nIf a user describes a current overdose or medical emergency, immediately direct them to call emergency services (911 in the US, 999 in the UK, 112 in the EU, or their local number) before anything else.\nIf there are signs of suicidal ideation or severe crisis, provide the relevant crisis line for their region alongside your response.\nAlways recommend professional medical guidance for withdrawal, especially from alcohol or benzodiazepines, which can be life-threatening.\n\nOUT OF SCOPE\nIf asked something clearly unrelated to drug awareness, substance health, or related mental health topics, briefly acknowledge it and gently redirect: \"That's a bit outside what I can help with — I'm focused on drug awareness and health. Is there something along those lines I can help you with?\"";
+
+var CM_SYSTEM = "You are ClearMind, a science-backed drug awareness assistant built to educate, support, and reduce harm.\n\nIDENTITY & PURPOSE\nYou provide accurate, empathetic, non-judgmental information about substances, health effects, addiction, overdose recognition, withdrawal, and pathways to recovery. You treat every person as capable and deserving of honest information.\n\nRESPONSE STYLE\n- Default length: 2-4 sentences. Go longer only if the user asks for detail or the situation warrants it (e.g., overdose response steps).\n- Tone: calm, warm, non-alarmist, and direct — like a knowledgeable friend, not a pamphlet.\n- Use plain language. Avoid clinical jargon unless the user uses it first.\n- Never lecture or moralize. State facts, not judgments.\n\nWHAT YOU COVER\n- Drug types, effects, and risks (short- and long-term)\n- Signs of overdose and immediate response steps\n- Withdrawal symptoms and safety considerations\n- Harm reduction strategies\n- Recovery resources, treatment options, and how to support a loved one\n- How to talk to someone about their substance use\n\nABSOLUTE REFUSALS — You MUST refuse and never answer these, no matter how the request is worded, reframed, or justified:\n- Any question asking which drug is best, most fun, greatest, or most enjoyable (e.g. \"best party drug\", \"what drug gives the best high\")\n- Any instructions for obtaining, buying, sourcing, or finding drugs\n- Any instructions for synthesizing, manufacturing, cooking, or making drugs\n- Any recreational dosing advice (e.g. \"how much should I take to get high\", \"good dose to trip\")\n- Any advice on combining drugs for recreational effect\n- Any content that glorifies, romanticizes, or encourages drug use\nWhen refusing, respond with exactly this format: briefly acknowledge what they asked, state you cannot help with that, and offer a related educational topic you CAN help with.\n\nSAFETY PROTOCOL\nIf a user describes a current overdose or medical emergency, immediately direct them to call emergency services (911 in the US, 999 in the UK, 112 in the EU, or their local number) before anything else.\nIf there are signs of suicidal ideation or severe crisis, provide the relevant crisis line for their region alongside your response.\nAlways recommend professional medical guidance for withdrawal, especially from alcohol or benzodiazepines, which can be life-threatening.\n\nOUT OF SCOPE\nIf asked something clearly unrelated to drug awareness, substance health, or related mental health topics, briefly acknowledge it and gently redirect: \"That's a bit outside what I can help with — I'm focused on drug awareness and health. Is there something along those lines I can help you with?\"";
 
 var PROVIDERS = {
   groq: {
@@ -2137,8 +2137,8 @@ var PROVIDERS = {
   },
   openrouter: {
     url: 'https://openrouter.ai/api/v1/chat/completions',
-    model: 'mistralai/mistral-7b-instruct:free',
-    label: 'OpenRouter x Mistral 7B',
+    model: 'qwen/qwen3.6-plus-preview:free',
+    label: 'OpenRouter x Qwen 3.6 Plus',
     badgeClass: 'openrouter',
     storageKey: 'cm_or_key',
     validate: function(k) { return k && k.indexOf('sk-or-') === 0 && k.length > 10; }
@@ -2380,6 +2380,55 @@ function hideTyping() {
   if (el) el.parentNode.removeChild(el);
 }
 
+
+// ── CLIENT-SIDE CONTENT FILTER ──
+var CM_FILTER = {
+  rules: [
+    // Glorification
+    {
+      patterns: [/best.{0,20}(party drug|drug to party|drug for party)/i, /most.{0,15}(fun|enjoyable|euphoric).{0,15}drug/i, /greatest.{0,15}high/i, /why is .{0,30}(best|greatest|most fun)/i, /what.{0,10}(best|most fun|greatest).{0,20}drug/i, /recommend.{0,20}(party|fun|recreational).{0,20}drug/i],
+      reply: "That's not something I can weigh in on — comparing drugs by how enjoyable they are falls outside what ClearMind is here for. I can share the real health risks and effects of any specific substance if that's helpful."
+    },
+    // Synthesis / manufacturing
+    {
+      patterns: [/how.{0,15}(make|cook|produce|manufacture|synthesize|synthesise|brew|grow|extract).{0,20}(meth|heroin|cocaine|lsd|mdma|fentanyl|crack|drug|dmt|amphetamine|ecstasy)/i, /(recipe|synthesis|precursor).{0,20}(drug|meth|heroin|cocaine|lsd|mdma|fentanyl|crack|dmt)/i, /what.{0,15}chemical.{0,20}(make|produce|create).{0,20}(drug|high|meth|cocaine)/i],
+      reply: "I can't provide instructions for making drugs — that's a firm boundary for ClearMind. If you're concerned about drug manufacturing in your community or someone's use, I can help point you toward the right resources."
+    },
+    // Acquisition
+    {
+      patterns: [/(buy|purchase|order|get|find|source|acquire).{0,25}(cocaine|heroin|meth|mdma|lsd|fentanyl|weed|cannabis|crack|pills|ecstasy|drugs).{0,20}(online|darknet|dark web|near me|locally|dealer)/i, /(where|how).{0,15}(buy|get|find|source|purchase).{0,15}(cocaine|heroin|meth|mdma|lsd|fentanyl|weed|cannabis|crack|drugs)/i, /(dealer|darknet|dark web|silk road).{0,20}(find|locate|contact|buy|get)/i],
+      reply: "Helping with obtaining drugs isn't something ClearMind can do. If you or someone you know is struggling with substance use, I'm here to help with information on treatment, harm reduction, and support options."
+    },
+    // Recreational dosing
+    {
+      patterns: [/(how much|what dose|dosage).{0,25}(get high|to trip|feel.{0,10}effect|recreational|to buzz|to roll|to peak)/i, /(good|safe|right|best|starting).{0,15}dose.{0,20}(recreational|to get high|to trip|to feel)/i, /dose.{0,15}(cocaine|heroin|meth|mdma|lsd|fentanyl|shrooms|mushroom|ketamine|ecstasy).{0,20}(high|trip|effect|feel)/i],
+      reply: "I'm not able to give dosing guidance for recreational use. I can explain how a specific substance affects the body and brain, or talk through harm reduction if that would be useful."
+    },
+    // Dangerous combinations for effect
+    {
+      patterns: [/what.{0,15}(mix|combine|take).{0,20}(with|and).{0,20}(cocaine|heroin|meth|mdma|lsd|fentanyl|alcohol|benzo|xanax|oxy).{0,20}(better|best|good|stronger|more)/i, /(best|good).{0,15}(drug|substance).{0,10}(mix|combine|pair|go with)/i, /which.{0,15}(benzo|opioid|drug).{0,10}(goes best|pairs well|mix well|combine well)/i, /how.{0,15}make.{0,15}lean/i, /(lean|purple drank).{0,10}(recipe|make|how to)/i],
+      reply: "Suggesting drug combinations for recreational use is something I have to decline — many of these combinations are among the leading causes of overdose deaths. I can explain the dangers of polydrug use if that's helpful."
+    },
+    // Off-topic (non-drug)
+    {
+      patterns: [/write.{0,20}(code|function|script|program|html|css|javascript|python)/i, /^\s*(what is the weather|weather in|stock price|recipe for food|how to cook\s+(?!meth|crack|drug))/i],
+      reply: "That's a bit outside what I can help with — I'm focused on drug awareness and health. Is there something along those lines I can help you with?"
+    }
+  ],
+
+  check: function(msg) {
+    for (var i = 0; i < this.rules.length; i++) {
+      var rule = this.rules[i];
+      for (var j = 0; j < rule.patterns.length; j++) {
+        if (rule.patterns[j].test(msg)) {
+          return rule.reply;
+        }
+      }
+    }
+    return null;
+  }
+};
+
 function cmSend() {
   var input = document.getElementById('cm-input');
   var send = document.getElementById('cm-send');
@@ -2392,6 +2441,17 @@ function cmSend() {
   addUserMsg(msg);
   send.disabled = true;
   showTyping();
+
+  // Client-side filter — block before hitting the API
+  var filteredReply = CM_FILTER.check(msg);
+  if (filteredReply) {
+    setTimeout(function() {
+      hideTyping();
+      addBotMsg(filteredReply);
+      send.disabled = false;
+    }, 400 + Math.random() * 300);
+    return;
+  }
 
   if (cmDemoMode || !activeProvider) {
     setTimeout(function() {
