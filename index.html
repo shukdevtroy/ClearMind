@@ -2938,7 +2938,9 @@ function renderDevList() {
 
   // Gmail button
   var gmailLink = document.createElement('a');
-  gmailLink.href = 'mailto:shukdevdatta@gmail.com';
+  gmailLink.href = 'https://mail.google.com/mail/?view=cm&to=shukdevdatta@gmail.com';
+  gmailLink.target = '_blank';
+  gmailLink.rel = 'noopener noreferrer';
   gmailLink.className = 'fab-btn fab-gmail';
   gmailLink.setAttribute('aria-label', 'Send us an email');
   gmailLink.innerHTML = `
